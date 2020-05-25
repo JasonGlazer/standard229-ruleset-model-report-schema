@@ -7,12 +7,24 @@
 			{
 				"name": "north_zone",
 				"building-area-type": "office",
-				"vertical-fenestration-percentage": 19
+				"exterior-above-grade-walls": [
+					{
+						"area": 5000,
+						"azimuth": 0,
+						"vertical-fenestration-percentage": 19
+					}
+				]
 			},
 			{
 				"name": "south_zone",
 				"building-area-type": "office",
-				"vertical-fenestration-percentage": 19
+				"exterior-above-grade-walls": [
+					{
+						"area": 5000,
+						"azimuth": 180,
+						"vertical-fenestration-percentage": 19
+					}
+				]
 			}
 		]
 	}

@@ -103,6 +103,27 @@
 						"all_others"
 					]
 				},
+				"exterior-above-grade-walls": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/exterior-above-grade-wall-item"
+					}
+				}
+			}
+		},
+		"exterior-above-grade-wall-item":{
+			"description": "A collection of one or more HVAC zones grouped together for simulation purposes. Spaces need not be contiguous to be combined within a single thermal block.",
+			"type": "object",
+			"properties": {
+				"area": {
+					"type": "number", 
+					"exclusiveMinimum": 0
+				},
+				"azimuth": {
+					"type": "number",
+					"minimum": 0,
+					"exclusiveMaximum": 360
+				},
 				"vertical-fenestration-percentage": {
 					"type": "number",
 					"minimum": 0,
