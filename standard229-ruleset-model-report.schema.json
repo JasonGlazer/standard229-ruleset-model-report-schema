@@ -125,17 +125,11 @@
 					"minimum": 0,
 					"maximum": 100
 				},
-				"fenestration-assembly-UFactor":{
-					"type": "number",
-					"minimum": 0
-				},
-				"fenestration-assembly-SHGC":{
-					"type": "number",
-					"minimum": 0
-				},
-				"fenestration-assembly-visible-transmittance":{
-					"type": "number",
-					"minimum": 0
+				"fenestration-assemblies":{
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/fenestration-assembly-item"
+					}
 				}
 			}
 		},
@@ -223,6 +217,24 @@
 				}
 			},
 			"additionalProperties": false
+		},
+		"fenestration-assembly-item":{
+			"description": "The description of an overall fenestration assembly.",
+			"type": "object",
+			"properties": {
+				"UFactor":{
+					"type": "number",
+					"minimum": 0
+				},
+				"SHGC":{
+					"type": "number",
+					"minimum": 0
+				},
+				"visible-transmittance":{
+					"type": "number",
+					"minimum": 0
+				}
+			}
 		}
 	},
 	"required": [
