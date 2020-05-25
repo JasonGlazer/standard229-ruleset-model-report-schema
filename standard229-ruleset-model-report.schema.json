@@ -21,46 +21,12 @@
 			"type": "string",
 			"additionalProperties": false
 		},
-		"exterior-lighting": {
+		"exterior-lighting-areas": {
 			"description": "Lighting for the exterior of a building and the building grounds.",
-			"type": "object",
-			"properties": {
-				"name": {
-					"type": "string"
-				},
-				"category": {
-					"type": "string",
-					"enum": [
-						"parking_lots_and_drives",
-						"walkways_narrow",
-						"walkways_wide",
-						"plaza_areas",
-						"special_feature_areas",
-						"stairways",
-						"main_entries",
-						"other_doors",
-						"canopies",
-						"open_outdoor_sales",
-						"street_frontage_vehicle_sales_lots",
-						"building_facades",
-						"automated_teller_machine",
-						"night_depositories",
-						"gatehouse_inspection_stations",
-						"loading_areas_emergency_responders",
-						"drive_up_window_fast_food",
-						"parking_near_24_hr_retail_entrances"
-					]
-				},
-				"area": {
-					"type": "number",
-					"exclusiveMinimum": 0
-				},
-				"power": {
-					"type": "number",
-					"exclusiveMinimum": 0
-				}
-			},
-			"additionalProperties": false
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/exterior-lighting-item"
+			}
 		},
 		"building": {
 			"description": "Contains all the details of the building on the site.",
@@ -130,6 +96,47 @@
 					"maximum": 100
 				}
 			}
+		},
+		"exterior-lighting-item": {
+			"description": "Lighting for the exterior of a building and the building grounds.",
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"category": {
+					"type": "string",
+					"enum": [
+						"parking_lots_and_drives",
+						"walkways_narrow",
+						"walkways_wide",
+						"plaza_areas",
+						"special_feature_areas",
+						"stairways",
+						"main_entries",
+						"other_doors",
+						"canopies",
+						"open_outdoor_sales",
+						"street_frontage_vehicle_sales_lots",
+						"building_facades",
+						"automated_teller_machine",
+						"night_depositories",
+						"gatehouse_inspection_stations",
+						"loading_areas_emergency_responders",
+						"drive_up_window_fast_food",
+						"parking_near_24_hr_retail_entrances"
+					]
+				},
+				"area": {
+					"type": "number",
+					"exclusiveMinimum": 0
+				},
+				"power": {
+					"type": "number",
+					"exclusiveMinimum": 0
+				}
+			},
+			"additionalProperties": false
 		}
 	},
 	"required": [
