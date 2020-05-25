@@ -1,0 +1,19 @@
+{
+	"transformation-stage": "user",
+	"test-id": "5c-1",
+	"building": {
+		"name": "main building on site",
+		"thermal-blocks": [
+			{
+				"name": "north_zone",
+				"building-area-type": "office",
+				"vertical-fenestration-percentage": 30
+			},
+			{
+				"name": "south_zone",
+				"building-area-type": "office",
+				"vertical-fenestration-percentage": 30
+			}
+		]
+	}
+}

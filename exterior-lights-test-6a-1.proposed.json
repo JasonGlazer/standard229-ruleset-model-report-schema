@@ -1,0 +1,10 @@
+{
+	"transformation-stage": "proposed",
+	"test-id": "6a-1",
+	"exterior-lighting": {
+		"name": "West Parking Ramp",
+		"category": "parking_lots_and_drives",
+		"area": 1000,
+		"power": 75
+	}
+}
