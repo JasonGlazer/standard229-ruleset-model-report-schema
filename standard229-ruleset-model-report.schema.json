@@ -40,6 +40,12 @@
 					"items": {
 						"$ref": "#/definitions/thermal-block-item"
 					}
+				},
+				"hvac-systems":{
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/hvac-system-item"
+					}  
 				}
 			},
 			"additionalProperties": false
@@ -132,6 +138,50 @@
 					"exclusiveMinimum": 0
 				},
 				"power": {
+					"type": "number",
+					"exclusiveMinimum": 0
+				}
+			},
+			"additionalProperties": false
+		},
+		"hvac-system-item": {
+			"description": "The equipment, distribution systems, and terminals that provide, either collectively or individually, the processes of heating, ventilating, or air conditioning to a building or portion of a building.",
+			"type": "object",
+			"properties": {
+				"tag": {
+					"type": "string"
+				},
+				"baseline-hvac-system-type": {
+					"type": "string",
+					"enum": [
+						"system_1_PTAC",
+						"system_2_PTHP",
+						"system_3_PSZ-AC",
+						"system_4_PSZ-HP",
+						"system_5_packaged_VAV_with_reheat",
+						"system_6_packaged_VAV_with_PFP_boxes",
+						"system_7_VAV_with_reheat",
+						"system_8_VAV_with_PFP_boxes",
+						"system_9_heating_and_ventilation_gas",
+						"system_10_heating_and_ventilation_electric",
+						"system_11_single_zone_VAV",
+						"system_12_single_zone_constant_hot_water",
+						"system_13_single_zone_constant_electric"
+					]
+				},
+				"fan-brake-horsepower": {
+					"type": "number",
+					"exclusiveMinimum": 0
+				},
+				"design-supply-fan-airflow-rate": {
+					"type": "number",
+					"exclusiveMinimum": 0
+				},
+				"sum-of-pressure-drop-adjustments-A": {
+					"type": "number",
+					"minimum": 0
+				},
+				"electric-power-to-fan-motor": {
 					"type": "number",
 					"exclusiveMinimum": 0
 				}
