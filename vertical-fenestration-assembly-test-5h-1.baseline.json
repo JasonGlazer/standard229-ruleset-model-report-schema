@@ -1,0 +1,24 @@
+{
+	"transformation-stage": "baseline",
+	"test-id": "5h-1",
+	"climate-zone": "4A",
+	"building": {
+		"name": "main building on site",
+		"thermal-blocks": [
+			{
+				"name": "north_zone",
+				"building-area-type": "office",
+				"exterior-above-grade-walls": [
+					{
+						"area": 5000,
+						"azimuth": 0,
+						"vertical-fenestration-percentage": 19,
+						"fenestration-assembly-UFactor": 0.57,
+						"fenestration-assembly-SHGC": 0.39,
+						"fenestration-assembly-visible-transmittance": 0.43
+					}
+				]
+			}
+		]
+	}
+}

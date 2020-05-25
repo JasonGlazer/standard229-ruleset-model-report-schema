@@ -21,6 +21,22 @@
 			"type": "string",
 			"additionalProperties": false
 		},
+		"climate-zone":{
+			"description": "The climate zone is based on ASHRAE 169 and Annex 1 of 90.1.",
+			"type": "string",
+			"enum": [
+				"0A", "0B", 
+				"1A", "1B",
+				"2A", "2B",
+				"3A", "3B", "3C",
+				"4A", "4B", "4C",
+				"5A", "5B", "5C",
+				"6A", "6B",
+				"7",
+				"8" 
+			], 
+			"additionalProperties": false
+		},
 		"exterior-lighting-areas": {
 			"description": "Lighting for the exterior of a building and the building grounds.",
 			"type": "array",
@@ -75,6 +91,14 @@
 						"all_others"
 					]
 				},
+				"space-conditioning-category": {
+					"type": "string",
+					"enum": [
+						"nonresidential-conditioned-space",
+						"residential-conditioned-space",
+						"semiheated-space"
+					]
+				},
 				"exterior-above-grade-walls": {
 					"type": "array",
 					"items": {
@@ -100,6 +124,18 @@
 					"type": "number",
 					"minimum": 0,
 					"maximum": 100
+				},
+				"fenestration-assembly-UFactor":{
+					"type": "number",
+					"minimum": 0
+				},
+				"fenestration-assembly-SHGC":{
+					"type": "number",
+					"minimum": 0
+				},
+				"fenestration-assembly-visible-transmittance":{
+					"type": "number",
+					"minimum": 0
 				}
 			}
 		},
