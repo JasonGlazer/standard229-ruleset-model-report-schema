@@ -1,0 +1,36 @@
+{
+	"transformation-stage": "user",
+	"test-id": "18a-1",
+	"climate-zone": "4A",
+	"building": {
+		"name": "main building on site",
+		"thermal-blocks": [
+			{
+				"name": "north_zone",
+				"building-area-type": "office",
+				"gross-conditioned-floor-area": 15000,
+				"floor-number": 1,
+				"below-grade": false,
+				"served-by-HVAC-systems-tagged": [
+					"Rooftop01"
+				]
+			},
+			{
+				"name": "south_zone",
+				"building-area-type": "office",
+				"gross-conditioned-floor-area": 15000,
+				"floor-number": 1,
+				"below-grade": false,
+				"served-by-HVAC-systems-tagged": [
+					"Rooftop01"
+				]
+			}
+		],
+		"hvac-systems": [
+			{
+				"tag": "Rooftop01",
+				"baseline-hvac-system-type": "system_4_PSZ-HP"
+			}
+		]
+	}
+}

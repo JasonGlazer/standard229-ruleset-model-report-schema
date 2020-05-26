@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "http://data.ashrae.org/standard229/standard229-ruleset-model-report.schema.json",
-	"title": "ASHRAE Standard 229 Summary Input Output Schema",
+	"title": "ASHRAE Standard 229 Ruleset Model Report (RMR) Schema",
 	"description": "A summary of building energy model inputs and outputs for confirming rulesets in ASHRAE Standard 229",
 	"type": "object",
 	"additionalProperties": false,
@@ -103,6 +103,22 @@
 					"type": "array",
 					"items": {
 						"$ref": "#/definitions/exterior-above-grade-wall-item"
+					}
+				},
+				"gross-conditioned-floor-area": {
+					"type": "number",
+					"exclusiveMinimum": 0
+				},
+				"floor-number": {
+					"type": "number"
+				},
+				"below-grade": {
+					"type": "boolean"
+				},
+				"served-by-HVAC-systems-tagged": {
+					"type": "array",
+					"items": {
+						"type": "string"
 					}
 				}
 			}
