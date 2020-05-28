@@ -29,7 +29,7 @@
 		"hvac-systems": [
 			{
 				"tag": "Rooftop01",
-				"baseline-hvac-system-type": "system_4_PSZ-HP"
+				"hvac-system-type": "system_4_PSZ-HP"
 			}
 		]
 	}

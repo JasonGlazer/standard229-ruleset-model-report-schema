@@ -197,7 +197,7 @@
 				"tag": {
 					"type": "string"
 				},
-				"baseline-hvac-system-type": {
+				"hvac-system-type": {
 					"type": "string",
 					"enum": [
 						"system_1_PTAC",
@@ -213,6 +213,7 @@
 						"system_11_single_zone_VAV",
 						"system_12_single_zone_constant_hot_water",
 						"system_13_single_zone_constant_electric"
+						"other"
 					]
 				},
 				"fan-brake-horsepower": {

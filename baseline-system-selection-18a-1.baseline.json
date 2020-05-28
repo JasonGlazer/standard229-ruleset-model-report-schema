@@ -29,7 +29,7 @@
 		"hvac-systems": [
 			{
 				"tag": "Rooftop01",
-				"baseline-hvac-system-type": "system_5_packaged_VAV_with_reheat"
+				"hvac-system-type": "system_5_packaged_VAV_with_reheat"
 			}
 		]
 	}
