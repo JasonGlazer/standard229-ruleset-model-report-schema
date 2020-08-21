@@ -45,8 +45,37 @@ def bad_validate_rmr():
                 print(f"rule broken is {err.rule} and definition is {err.rule_definition}")
 
 def recreate_test_cases():
+    # exterior lights 6a-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../exterior-lights-test-6a-1-recreated")
     rmr_triplet.baseline_instance["exterior-lighting-areas"][0]["power"] = 150
+    rmr_triplet.save_instances()
+
+    # baseline system selection 18a-1
+    rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../baseline-system-selection-18a-1-recreated")
+    rmr_triplet.user_instance["building"]["hvac-systems"][0]["hvac-system-type"] = "system_4_PSZ-HP"
+    rmr_triplet.proposed_instance["building"]["hvac-systems"][0]["hvac-system-type"] = "system_4_PSZ-HP"
+    rmr_triplet.baseline_instance["building"]["hvac-systems"][0]["hvac-system-type"] = "system_5_packaged_VAV_with_reheat"
+    rmr_triplet.save_instances()
+
+    # system fan power 19v-4
+    rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../system-fan-power-test-19v-4-recreated")
+    rmr_triplet.baseline_instance["building"]["hvac-systems"][0]["fan-brake-horsepower"] = 156
+    rmr_triplet.baseline_instance["building"]["hvac-systems"][0]["electric-power-to-fan-motor"] = 122
+    rmr_triplet.save_instances()
+
+    # vertical fenestration area 5c-1
+    rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../vertical-fenestration-area-test-5c-1-recreated")
+    rmr_triplet.baseline_instance["building"]["thermal-blocks"][0]["exterior-above-grade-walls"][0]["vertical-fenestration-percentage"] = 19
+    rmr_triplet.baseline_instance["building"]["thermal-blocks"][1]["exterior-above-grade-walls"][0]["vertical-fenestration-percentage"] = 19
+    rmr_triplet.save_instances()
+
+    # vertical fenestration assembly 5h-1
+    rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../vertical-fenestration-assembly-test-5h-1-recreated")
+    for thermal_block in rmr_triplet.baseline_instance["building"]["thermal-blocks"]:
+        thermal_block["exterior-above-grade-walls"][0]["fenestration-assemblies"][0]["UFactor"] = 0.57
+        thermal_block["exterior-above-grade-walls"][0]["fenestration-assemblies"][0]["SHGC"] = 0.39
+        thermal_block["exterior-above-grade-walls"][0]["fenestration-assemblies"][0]["visible-transmittance"] = 0.43
+
     rmr_triplet.save_instances()
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 {
-  "transformation-stage": "proposed",
+  "transformation-stage": "baseline",
   "test-id": "None",
   "climate-zone": "4A",
   "building": {
@@ -21,9 +21,9 @@
             "vertical-fenestration-percentage": 30,
             "fenestration-assemblies": [
               {
-                "UFactor": 0.45,
-                "SHGC": 0.35,
-                "visible-transmittance": 0.42
+                "UFactor": 0.57,
+                "SHGC": 0.39,
+                "visible-transmittance": 0.43
               }
             ]
           }
@@ -45,9 +45,9 @@
             "vertical-fenestration-percentage": 30,
             "fenestration-assemblies": [
               {
-                "UFactor": 0.45,
-                "SHGC": 0.35,
-                "visible-transmittance": 0.42
+                "UFactor": 0.57,
+                "SHGC": 0.39,
+                "visible-transmittance": 0.43
               }
             ]
           }

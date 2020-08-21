@@ -1,5 +1,5 @@
 {
-  "transformation-stage": "proposed",
+  "transformation-stage": "user",
   "test-id": "None",
   "climate-zone": "4A",
   "building": {
@@ -57,7 +57,7 @@
     "hvac-systems": [
       {
         "tag": "Rooftop01",
-        "hvac-system-type": "system_5_packaged_VAV_with_reheat",
+        "hvac-system-type": "system_4_PSZ-HP",
         "fan-brake-horsepower": 140,
         "design-supply-fan-airflow-rate": 120000,
         "sum-of-pressure-drop-adjustments-A": 0,

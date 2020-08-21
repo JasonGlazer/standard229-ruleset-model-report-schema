@@ -18,7 +18,7 @@
           {
             "area": 5000,
             "azimuth": 0,
-            "vertical-fenestration-percentage": 19,
+            "vertical-fenestration-percentage": 30,
             "fenestration-assemblies":[
               {
                 "UFactor": 0.45,
@@ -42,7 +42,14 @@
           {
             "area": 5000,
             "azimuth": 180,
-            "vertical-fenestration-percentage": 30
+            "vertical-fenestration-percentage": 30,
+            "fenestration-assemblies":[
+              {
+                "UFactor": 0.45,
+                "SHGC": 0.35,
+                "visible-transmittance": 0.42
+              }
+            ] 
           }
         ]
       }

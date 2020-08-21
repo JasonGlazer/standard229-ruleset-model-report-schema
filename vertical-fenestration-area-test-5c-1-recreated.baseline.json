@@ -1,5 +1,5 @@
 {
-  "transformation-stage": "proposed",
+  "transformation-stage": "baseline",
   "test-id": "None",
   "climate-zone": "4A",
   "building": {
@@ -18,7 +18,7 @@
           {
             "area": 5000,
             "azimuth": 0,
-            "vertical-fenestration-percentage": 30,
+            "vertical-fenestration-percentage": 19,
             "fenestration-assemblies": [
               {
                 "UFactor": 0.45,
@@ -42,7 +42,7 @@
           {
             "area": 5000,
             "azimuth": 180,
-            "vertical-fenestration-percentage": 30,
+            "vertical-fenestration-percentage": 19,
             "fenestration-assemblies": [
               {
                 "UFactor": 0.45,
