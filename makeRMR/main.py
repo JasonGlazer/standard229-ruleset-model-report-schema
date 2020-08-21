@@ -1,7 +1,9 @@
 import os
 import json
 import fastjsonschema
+from shutil import copyfile
 
+from rmrtriplet import RmrTriplet
 
 def validator_for_schema():
     with open("../standard229-ruleset-model-report.schema.json") as schema_file:
@@ -25,8 +27,8 @@ def check_rmrs(validator):
                     print()
 
 # test method, probably can be deleted
-def validate_rmr():
-    with open("standard229-ruleset-model-report.schema.json") as schema_file:
+def bad_validate_rmr():
+    with open("../standard229-ruleset-model-report.schema.json") as schema_file:
         schema229 = json.load(schema_file)
         #print(json.dumps(schema229, indent=4))
         schema_validator = fastjsonschema.compile(schema229)
@@ -42,11 +44,15 @@ def validate_rmr():
                 print(f"invalid value {err.value}")
                 print(f"rule broken is {err.rule} and definition is {err.rule_definition}")
 
-
+def recreate_test_cases():
+    rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../exterior-lights-test-6a-1-recreated")
+    rmr_triplet.baseline_instance["exterior-lighting-areas"][0]["power"] = 150
+    rmr_triplet.save_instances()
 
 if __name__ == '__main__':
-    #validate_rmr()
+    #bad_validate_rmr()
     validator = validator_for_schema()
     check_rmrs(validator)
+    recreate_test_cases()
 
 

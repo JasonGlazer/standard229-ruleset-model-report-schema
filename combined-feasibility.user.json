@@ -1,0 +1,69 @@
+{
+  "transformation-stage": "user",
+  "test-id": "None",
+  "climate-zone": "4A",
+  "building": {
+    "name": "main building on site",
+    "thermal-blocks": [
+      {
+        "name": "north_zone",
+        "building-area-type": "office",
+        "gross-conditioned-floor-area": 15000,
+        "floor-number": 1,
+        "below-grade": false,
+        "served-by-HVAC-systems-tagged": [
+          "Rooftop01"
+        ],
+        "exterior-above-grade-walls": [
+          {
+            "area": 5000,
+            "azimuth": 0,
+            "vertical-fenestration-percentage": 19,
+            "fenestration-assemblies":[
+              {
+                "UFactor": 0.45,
+                "SHGC": 0.35,
+                "visible-transmittance": 0.42
+              }
+            ] 
+          }
+        ]
+      },
+      {
+        "name": "south_zone",
+        "building-area-type": "office",
+        "gross-conditioned-floor-area": 15000,
+        "floor-number": 1,
+        "below-grade": false,
+        "served-by-HVAC-systems-tagged": [
+          "Rooftop01"
+        ],
+        "exterior-above-grade-walls": [
+          {
+            "area": 5000,
+            "azimuth": 180,
+            "vertical-fenestration-percentage": 30
+          }
+        ]
+      }
+    ],
+    "hvac-systems": [
+      {
+        "tag": "Rooftop01",
+        "hvac-system-type": "system_5_packaged_VAV_with_reheat",
+        "fan-brake-horsepower": 140,
+        "design-supply-fan-airflow-rate": 120000,
+        "sum-of-pressure-drop-adjustments-A": 0,
+        "electric-power-to-fan-motor": 103
+      }
+    ]
+  },
+  "exterior-lighting-areas": [
+    {
+      "name": "West Parking Ramp",
+      "category": "parking_lots_and_drives",
+      "area": 1000,
+      "power": 75
+    }
+  ]
+}
