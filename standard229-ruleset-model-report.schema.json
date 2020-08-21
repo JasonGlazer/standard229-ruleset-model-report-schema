@@ -212,7 +212,7 @@
 						"system_10_heating_and_ventilation_electric",
 						"system_11_single_zone_VAV",
 						"system_12_single_zone_constant_hot_water",
-						"system_13_single_zone_constant_electric"
+						"system_13_single_zone_constant_electric",
 						"other"
 					]
 				},
