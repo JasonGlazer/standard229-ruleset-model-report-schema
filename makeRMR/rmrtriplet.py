@@ -48,31 +48,31 @@ class RmrTriplet(object):
             json.dump(self.baseline, instance_file, indent=2)
 
     def check_rules(self, rules_to_check):
-        print("------------------------")
-        print("Checking rules for:")
-        print(f"  {self.user_file_name}")
-        print(f"  {self.proposed_file_name}")
-        print(f"  {self.baseline_file_name}")
-        print(f"  Specific rules checked: {rules_to_check}")
-
         if "all" in rules_to_check:
-            rules_to_check = ["6a_1"]
+            rules_to_check = ["6a_1", "18a_1"]
 
-        if "6a_1" in rules_to_check:
-            self.check_exterior_lights_6a_1()
+        if rules_to_check:
+            print("------------------------")
+            print("Checking rules for:")
+            print(f"  {self.user_file_name}")
+            print(f"  {self.proposed_file_name}")
+            print(f"  {self.baseline_file_name}")
+            print(f"  Specific rules checked: {rules_to_check}")
 
-        if "18a_1" in rules_to_check:
-            self.check_system_selection_18a_1()
+            if "6a_1" in rules_to_check:
+                self.check_exterior_lights_6a_1()
+            if "18a_1" in rules_to_check:
+                self.check_system_selection_18a_1()
 
-        if self.proposed_err:
-            print("Proposed RMR file fails.")
-        else:
-            print("Proposed RMR file passes.")
-        if self.baseline_err:
-            print("Baseline RMR file fails.")
-        else:
-            print("Baseline RMR file passes.")
-        print("")
+            if self.proposed_err:
+                print("Proposed RMR file fails.")
+            else:
+                print("Proposed RMR file passes.")
+            if self.baseline_err:
+                print("Baseline RMR file fails.")
+            else:
+                print("Baseline RMR file passes.")
+            print("")
 
     def check_exterior_lights_6a_1(self):
         # Last paragraph of baseline side of Table G3.1 part 6 and Table G3.6
