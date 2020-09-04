@@ -23,30 +23,24 @@ class RmrTriplet(object):
         copyfile(self.origin_file_name, self.user_file_name)
         with open(self.user_file_name, "r") as instance_file:
             self.user_instance = json.load(instance_file)
-            #self.user_instance["transformation_stage"] = "USER"
             self.user = Munch.fromDict(self.user_instance)
             self.user.transformation_stage = "USER"
         copyfile(self.origin_file_name, self.proposed_file_name)
         with open(self.proposed_file_name, "r") as instance_file:
             self.proposed_instance = json.load(instance_file)
-            #self.proposed_instance["transformation_stage"] = "PROPOSED"
             self.proposed = Munch.fromDict(self.proposed_instance)
             self.proposed.transformation_stage = "PROPOSED"
         copyfile(self.origin_file_name, self.baseline_file_name)
         with open(self.baseline_file_name, "r") as instance_file:
             self.baseline_instance = json.load(instance_file)
-            #self.baseline_instance["transformation_stage"] = "BASELINE"
             self.baseline = Munch.fromDict(self.baseline_instance)
             self.baseline.transformation_stage = "BASELINE"
 
     def save_instances(self):
         with open(self.user_file_name, "w") as instance_file:
-            #json.dump(self.user_instance, instance_file, indent=2)
             json.dump(self.user, instance_file, indent=2)
         with open(self.proposed_file_name, "w") as instance_file:
-            #json.dump(self.proposed_instance, instance_file, indent=2)
             json.dump(self.proposed, instance_file, indent=2)
         with open(self.baseline_file_name, "w") as instance_file:
-            #json.dump(self.baseline_instance, instance_file, indent=2)
             json.dump(self.baseline, instance_file, indent=2)
 
