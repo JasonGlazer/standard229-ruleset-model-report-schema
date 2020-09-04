@@ -38,7 +38,7 @@ def recreate_test_cases():
     rmr_triplet.proposed.Building.HeatingVentilationAirConditioningSystems[0].hvac_system_type = "SYSTEM_4_PSZ_HP"
     rmr_triplet.baseline.Building.HeatingVentilationAirConditioningSystems[0].hvac_system_type = "SYSTEM_5_PACKAGED_VAV_WITH_REHEAT"
     rmr_triplet.save_instances()
-    rmr_triplet.check_rules(["",])
+    rmr_triplet.check_rules(["18a_1",])
 
     # system fan power 19v-4
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../system-fan-power-test-19v-4-recreated")

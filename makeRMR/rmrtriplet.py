@@ -61,6 +61,9 @@ class RmrTriplet(object):
         if "6a_1" in rules_to_check:
             self.check_exterior_lights_6a_1()
 
+        if "18a_1" in rules_to_check:
+            self.check_system_selection_18a_1()
+
         if self.proposed_err:
             print("Proposed RMR file fails.")
         else:
@@ -121,6 +124,7 @@ class RmrTriplet(object):
             print("  No, rest of baseline ExteriorLightingAreas does not match user")
             self.baseline_err = True
 
+        # user and proposed should match
         if self.user.ExteriorLightingAreas == self.proposed.ExteriorLightingAreas:
             print("  Yes, proposed ExteriorLightingAreas matches user")
         else:
@@ -128,4 +132,71 @@ class RmrTriplet(object):
             self.proposed_err = True
 
 
+    def check_system_selection_18a_1(self):
+        # G3.1.1a, table G3.1.1-3, table G3.1.1-4
 
+        TableG3_1_1_3 = {
+            "RESIDENTIAL": ["SYSTEM_1_PTAC", "SYSTEM_2_PTHP"],
+            "PUBLIC_ASSEMBLY_SMALL": ["SYSTEM_3_PSZ_AC","SYSTEM_4_PSZ_HP"],
+            "PUBLIC_ASSEMBLY_LARGE": ["SYSTEM_12_SINGLE_ZONE_CONSTANT_HOT_WATER", "SYSTEM_13_SINGLE_ZONE_CONSTANT_ELECTRIC"],
+            "HEATED_ONLY_STORAGE": ["SYSTEM_9_HEATING_AND_VENTILATION_GAS", "SYSTEM_10_HEATING_AND_VENTILATION_ELECTRIC"],
+            "RETAIL_TWO_FLOOR_OR_LESS": ["SYSTEM_3_PSZ_AC", "SYSTEM_4_PSZ_HP"],
+            "OTHER_NONRESIDENTIAL_SMALL": ["SYSTEM_3_PSZ_AC", "SYSTEM_4_PSZ_HP"],
+            "OTHER_NONRESIDENTIAL_MEDIUM": ["SYSTEM_5_PACKAGED_VAV_WITH_REHEAT", "SYSTEM_6_PACKAGED_VAV_WITH_PFP_BOXES"],
+            "OTHER_NONRESIDENTIAL_LARGE": ["SYSTEM_7_VAV_WITH_REHEAT", "SYSTEM_8_VAV_WITH_PFP_BOXES"]
+        }
+
+        total_area = 0
+        highest_floor = -1
+        first_building_area_type = self.user.Building.ThermalBlocks[0].building_area_type
+        all_area_types_same = True
+        for thermal_block in self.user.Building.ThermalBlocks:
+            total_area += thermal_block.gross_conditioned_floor_area
+            if thermal_block.floor_number > highest_floor:
+                highest_floor = thermal_block.floor_number
+            if thermal_block.building_area_type != first_building_area_type:
+                all_area_types_same = False
+
+        if not all_area_types_same:
+            print("  Rules not checked that apply to buildings with multiple building types.")
+        else:
+            if first_building_area_type != "OFFICE":
+                print("  Rules not checked that apply to buildings other than office buildings.")
+            else:
+                building_type_subcategory = "OTHER_NONRESIDENTIAL_MEDIUM"
+                if total_area < 25000 and highest_floor <=3:
+                    building_type_subcategory = "OTHER_NONRESIDENTIAL_SMALL"
+                elif total_area > 150000 or highest_floor > 5:
+                    building_type_subcategory = "OTHER_NONRESIDENTIAL_LARGE"
+
+                expected_baseline_system, baseline_system_climate_zones_0_to_3A = TableG3_1_1_3[building_type_subcategory]
+                if self.user.climate_zone in ["0A", "0B", "1A", "1B", "2A", "2B", "3A", "3B", "3C"]:
+                    expected_baseline_system = baseline_system_climate_zones_0_to_3A
+
+                for hvac_system in self.baseline.Building.HeatingVentilationAirConditioningSystems:
+                    print(f"Confirming rule 18a_1 for {hvac_system.tag}")
+                    if hvac_system.hvac_system_type == expected_baseline_system:
+                        print(f"  Yes, baseline HVAC system: {hvac_system.hvac_system_type} matches expected for {hvac_system.tag}")
+                    else:
+                        print(f"  No, baseline HVAC system {hvac_system.hvac_system_type} does not match expected {expected_baseline_system} for {hvac_system.tag}")
+                        self.proposed_err = True
+
+        # remove changing portions to see if rest is the same
+        altered_user = deepcopy(self.user.Building.HeatingVentilationAirConditioningSystems)
+        for hvac_system in altered_user:
+            hvac_system.hvac_system_type = ""
+        altered_baseline = deepcopy(self.baseline.Building.HeatingVentilationAirConditioningSystems)
+        for hvac_system in altered_baseline:
+            hvac_system.hvac_system_type = ""
+        if altered_user == altered_baseline:
+            print("  Yes, rest of baseline HeatingVentilationAirConditioningSystems matches user")
+        else:
+            print("  No, rest of baseline HeatingVentilationAirConditioningSystems does not match user")
+            self.baseline_err = True
+
+        # user and proposed should match
+        if self.user.Building.HeatingVentilationAirConditioningSystems == self.proposed.Building.HeatingVentilationAirConditioningSystems:
+            print("  Yes, proposed HeatingVentilationAirConditioningSystems matches user")
+        else:
+            print("  No, proposed HeatingVentilationAirConditioningSystems does not match user")
+            self.proposed_err = True
