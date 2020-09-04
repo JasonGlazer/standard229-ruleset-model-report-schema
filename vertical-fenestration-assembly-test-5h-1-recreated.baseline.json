@@ -1,29 +1,29 @@
 {
-  "transformation-stage": "baseline",
-  "test-id": "None",
-  "climate-zone": "4A",
-  "building": {
+  "transformation_stage": "BASELINE",
+  "test_id": "None",
+  "climate_zone": "4A",
+  "Building": {
     "name": "main building on site",
-    "thermal-blocks": [
+    "ThermalBlocks": [
       {
         "name": "north_zone",
-        "building-area-type": "office",
-        "gross-conditioned-floor-area": 15000,
-        "floor-number": 1,
-        "below-grade": false,
-        "served-by-HVAC-systems-tagged": [
+        "building_area_type": "OFFICE",
+        "gross_conditioned_floor_area": 15000,
+        "floor_number": 1,
+        "below_grade": false,
+        "served_by_heating_ventilation_air_conditioning_systems_tagged": [
           "Rooftop01"
         ],
-        "exterior-above-grade-walls": [
+        "ExteriorAboveGradeWalls": [
           {
             "area": 5000,
             "azimuth": 0,
-            "vertical-fenestration-percentage": 30,
-            "fenestration-assemblies": [
+            "vertical_fenestration_percentage": 30,
+            "FenestrationAssemblies": [
               {
-                "UFactor": 0.57,
-                "SHGC": 0.39,
-                "visible-transmittance": 0.43
+                "u_factor": 0.57,
+                "solar_heat_gain_coefficient": 0.39,
+                "visible_transmittance": 0.43
               }
             ]
           }
@@ -31,44 +31,46 @@
       },
       {
         "name": "south_zone",
-        "building-area-type": "office",
-        "gross-conditioned-floor-area": 15000,
-        "floor-number": 1,
-        "below-grade": false,
-        "served-by-HVAC-systems-tagged": [
+        "building_area_type": "OFFICE",
+        "gross_conditioned_floor_area": 15000,
+        "floor_number": 1,
+        "below_grade": false,
+        "served_by_hvac_systems_tagged": [
           "Rooftop01"
         ],
-        "exterior-above-grade-walls": [
+        "ExteriorAboveGradeWalls": [
           {
             "area": 5000,
             "azimuth": 180,
-            "vertical-fenestration-percentage": 30,
-            "fenestration-assemblies": [
+            "vertical_fenestration_percentage": 30,
+            "FenestrationAssemblies": [
               {
-                "UFactor": 0.57,
-                "SHGC": 0.39,
-                "visible-transmittance": 0.43
+                "u_fctor": 0.45,
+                "shgc": 0.35,
+                "visible_transmittance": 0.43,
+                "u_factor": 0.57,
+                "solar_heat_gain_coefficient": 0.39
               }
             ]
           }
         ]
       }
     ],
-    "hvac-systems": [
+    "HeatingVentilationAirConditioningSystems": [
       {
         "tag": "Rooftop01",
-        "hvac-system-type": "system_5_packaged_VAV_with_reheat",
-        "fan-brake-horsepower": 140,
-        "design-supply-fan-airflow-rate": 120000,
-        "sum-of-pressure-drop-adjustments-A": 0,
-        "electric-power-to-fan-motor": 103
+        "hvac_system_type": "SYSTEM_5_PACKAGED_VAV_WITH_REHEAT",
+        "fan_brake_horsepower": 140,
+        "design_supply_fan_airflow_rate": 120000,
+        "sum_of_pressure_drop_adjustments_A": 0,
+        "electric_power_to_fan_motor": 103
       }
     ]
   },
-  "exterior-lighting-areas": [
+  "ExteriorLightingAreas": [
     {
       "name": "West Parking Ramp",
-      "category": "parking_lots_and_drives",
+      "category": "PARKING_LOTS_AND_DRIVES",
       "area": 1000,
       "power": 75
     }
