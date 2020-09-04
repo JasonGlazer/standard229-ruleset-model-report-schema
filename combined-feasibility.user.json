@@ -11,7 +11,7 @@
         "gross_conditioned_floor_area": 15000,
         "floor_number": 1,
         "below_grade": false,
-        "served_by_HVAC_systems_tagged": [
+        "served_by_heating_ventilation_air_conditioning_systems_tagged": [
           "Rooftop01"
         ],
         "ExteriorAboveGradeWalls": [
@@ -22,7 +22,7 @@
             "FenestrationAssemblies":[
               {
                 "u_factor": 0.45,
-                "shgc": 0.35,
+                "solar_heat_gain_coefficient": 0.35,
                 "visible_transmittance": 0.42
               }
             ] 
@@ -54,7 +54,7 @@
         ]
       }
     ],
-    "HvacSystems": [
+    "HeatingVentilationAirConditioningSystems": [
       {
         "tag": "Rooftop01",
         "hvac_system_type": "SYSTEM_5_PACKAGED_VAV_WITH_REHEAT",

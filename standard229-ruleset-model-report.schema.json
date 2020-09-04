@@ -57,7 +57,7 @@
 						"$ref": "#/definitions/thermal_block_item"
 					}
 				},
-				"HvacSystems":{
+				"HeatingVentilationAirConditioningSystems":{
 					"type": "array",
 					"items": {
 						"$ref": "#/definitions/hvac_system_item"
@@ -115,7 +115,7 @@
 				"below_grade": {
 					"type": "boolean"
 				},
-				"served_by_HVAC_systems_tagged": {
+				"served_by_heating_ventilation_air_conditioning_systems_tagged": {
 					"type": "array",
 					"items": {
 						"type": "string"
@@ -239,11 +239,11 @@
 			"description": "The description of an overall fenestration assembly.",
 			"type": "object",
 			"properties": {
-				"UFactor":{
+				"u_factor":{
 					"type": "number",
 					"minimum": 0
 				},
-				"SHGC":{
+				"solar_heat_gain_coefficient":{
 					"type": "number",
 					"minimum": 0
 				},
