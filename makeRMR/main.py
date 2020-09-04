@@ -28,8 +28,9 @@ def check_rmrs(validator):
 def recreate_test_cases():
     # exterior lights 6a-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../exterior-lights-test-6a-1-recreated")
-    rmr_triplet.baseline.ExteriorLightingAreas[0].power = 150
+    rmr_triplet.baseline.ExteriorLightingAreas[0].power = 150  #should be 150
     rmr_triplet.save_instances()
+    rmr_triplet.check_rules()
 
     # baseline system selection 18a-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../baseline-system-selection-18a-1-recreated")
