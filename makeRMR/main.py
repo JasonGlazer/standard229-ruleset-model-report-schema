@@ -28,35 +28,46 @@ def check_rmrs(validator):
 def recreate_test_cases():
     # exterior lights 6a-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../exterior-lights-test-6a-1-recreated")
-    rmr_triplet.baseline_instance["ExteriorLightingAreas"][0]["power"] = 150
+    #rmr_triplet.baseline_instance["ExteriorLightingAreas"][0]["power"] = 150
+    rmr_triplet.baseline.ExteriorLightingAreas[0].power = 150
     rmr_triplet.save_instances()
 
     # baseline system selection 18a-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../baseline-system-selection-18a-1-recreated")
-    rmr_triplet.user_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["hvac_system_type"] = "SYSTEM_4_PSZ_HP"
-    rmr_triplet.proposed_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["hvac_system_type"] = "SYSTEM_4_PSZ_HP"
-    rmr_triplet.baseline_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["hvac_system_type"] = "SYSTEM_5_PACKAGED_VAV_WITH_REHEAT"
+    #rmr_triplet.user_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["hvac_system_type"] = "SYSTEM_4_PSZ_HP"
+    rmr_triplet.user.Building.HeatingVentilationAirConditioningSystems[0].hvac_system_type = "SYSTEM_4_PSZ_HP"
+    #rmr_triplet.proposed_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["hvac_system_type"] = "SYSTEM_4_PSZ_HP"
+    rmr_triplet.proposed.Building.HeatingVentilationAirConditioningSystems[0].hvac_system_type = "SYSTEM_4_PSZ_HP"
+    #rmr_triplet.baseline_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["hvac_system_type"] = "SYSTEM_5_PACKAGED_VAV_WITH_REHEAT"
+    rmr_triplet.baseline.Building.HeatingVentilationAirConditioningSystems[0].hvac_system_type = "SYSTEM_5_PACKAGED_VAV_WITH_REHEAT"
     rmr_triplet.save_instances()
 
     # system fan power 19v-4
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../system-fan-power-test-19v-4-recreated")
-    rmr_triplet.baseline_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["fan_brake_horsepower"] = 156
-    rmr_triplet.baseline_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["electric_power_to_fan_motor"] = 122
+    #rmr_triplet.baseline_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["fan_brake_horsepower"] = 156
+    rmr_triplet.baseline.Building.HeatingVentilationAirConditioningSystems[0].fan_brake_horsepower = 156
+    #rmr_triplet.baseline_instance["Building"]["HeatingVentilationAirConditioningSystems"][0]["electric_power_to_fan_motor"] = 122
+    rmr_triplet.baseline.Building.HeatingVentilationAirConditioningSystems[0].electric_power_to_fan_motor = 122
     rmr_triplet.save_instances()
 
     # vertical fenestration area 5c-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../vertical-fenestration-area-test-5c-1-recreated")
-    rmr_triplet.baseline_instance["Building"]["ThermalBlocks"][0]["ExteriorAboveGradeWalls"][0]["vertical_fenestration_percentage"] = 19
-    rmr_triplet.baseline_instance["Building"]["ThermalBlocks"][1]["ExteriorAboveGradeWalls"][0]["vertical_fenestration_percentage"] = 19
+    #rmr_triplet.baseline_instance["Building"]["ThermalBlocks"][0]["ExteriorAboveGradeWalls"][0]["vertical_fenestration_percentage"] = 19
+    rmr_triplet.baseline.Building.ThermalBlocks[0].ExteriorAboveGradeWalls[0].vertical_fenestration_percentage = 19
+    #rmr_triplet.baseline_instance["Building"]["ThermalBlocks"][1]["ExteriorAboveGradeWalls"][0]["vertical_fenestration_percentage"] = 19
+    rmr_triplet.baseline.Building.ThermalBlocks[1].ExteriorAboveGradeWalls[0].vertical_fenestration_percentage = 19
     rmr_triplet.save_instances()
 
     # vertical fenestration assembly 5h-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../vertical-fenestration-assembly-test-5h-1-recreated")
-    for thermal_block in rmr_triplet.baseline_instance["Building"]["ThermalBlocks"]:
-        thermal_block["ExteriorAboveGradeWalls"][0]["FenestrationAssemblies"][0]["u_factor"] = 0.57
-        thermal_block["ExteriorAboveGradeWalls"][0]["FenestrationAssemblies"][0]["solar_heat_gain_coefficient"] = 0.39
-        thermal_block["ExteriorAboveGradeWalls"][0]["FenestrationAssemblies"][0]["visible_transmittance"] = 0.43
-
+    #for thermal_block in rmr_triplet.baseline_instance["Building"]["ThermalBlocks"]:
+    for thermal_block in rmr_triplet.baseline.Building.ThermalBlocks:
+        #thermal_block["ExteriorAboveGradeWalls"][0]["FenestrationAssemblies"][0]["u_factor"] = 0.57
+        thermal_block.ExteriorAboveGradeWalls[0].FenestrationAssemblies[0].u_factor = 0.57
+        #thermal_block["ExteriorAboveGradeWalls"][0]["FenestrationAssemblies"][0]["solar_heat_gain_coefficient"] = 0.39
+        thermal_block.ExteriorAboveGradeWalls[0].FenestrationAssemblies[0].solar_heat_gain_coefficient = 0.39
+        #thermal_block["ExteriorAboveGradeWalls"][0]["FenestrationAssemblies"][0]["visible_transmittance"] = 0.43
+        thermal_block.ExteriorAboveGradeWalls[0].FenestrationAssemblies[0].visible_transmittance = 0.43
     rmr_triplet.save_instances()
 
 if __name__ == '__main__':
