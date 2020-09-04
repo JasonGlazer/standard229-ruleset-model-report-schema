@@ -45,8 +45,8 @@
             "vertical_fenestration_percentage": 19,
             "FenestrationAssemblies": [
               {
-                "u_fctor": 0.45,
-                "shgc": 0.35,
+                "u_factor": 0.45,
+                "solar_heat_gain_coefficient": 0.35,
                 "visible_transmittance": 0.42
               }
             ]
