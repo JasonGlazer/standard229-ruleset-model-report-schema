@@ -46,14 +46,19 @@ class RmrTriplet(object):
         with open(self.baseline_file_name, "w") as instance_file:
             json.dump(self.baseline, instance_file, indent=2)
 
-    def check_rules(self):
+    def check_rules(self, rules_to_check):
         print("------------------------")
         print("Checking rules for:")
         print(f"  {self.user_file_name}")
         print(f"  {self.proposed_file_name}")
         print(f"  {self.baseline_file_name}")
+        print(f"  Specific rules checked: {rules_to_check}")
 
-        self.check_exterior_lights_6a_1()
+        if "all" in rules_to_check:
+            rules_to_check = ["6a_1"]
+
+        if "6a_1" in rules_to_check:
+            self.check_exterior_lights_6a_1()
 
         if self.proposed_err:
             print("Proposed RMR file fails.")
