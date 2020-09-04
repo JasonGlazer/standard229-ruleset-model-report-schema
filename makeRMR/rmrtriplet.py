@@ -1,6 +1,7 @@
 import json
 from shutil import copyfile
 from munch import Munch
+from copy import deepcopy
 
 
 class RmrTriplet(object):
@@ -107,8 +108,24 @@ class RmrTriplet(object):
             else:
                 print("  Non-tradable area rules not yet checked.")
 
+        # remove changing portions to see if rest is the same
+        altered_user = deepcopy(self.user.ExteriorLightingAreas)
+        for exterior_lighting_areas in altered_user:
+            exterior_lighting_areas.power = 0
+        altered_baseline = deepcopy(self.baseline.ExteriorLightingAreas)
+        for exterior_lighting_areas in altered_baseline:
+            exterior_lighting_areas.power = 0
+        if altered_user == altered_baseline:
+            print("  Yes, rest of baseline ExteriorLightingAreas matches user")
+        else:
+            print("  No, rest of baseline ExteriorLightingAreas does not match user")
+            self.baseline_err = True
+
         if self.user.ExteriorLightingAreas == self.proposed.ExteriorLightingAreas:
             print("  Yes, proposed ExteriorLightingAreas matches user")
         else:
             print("  No, proposed ExteriorLightingAreas does not match user")
             self.proposed_err = True
+
+
+
