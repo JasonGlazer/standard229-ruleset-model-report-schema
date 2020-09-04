@@ -1,27 +1,27 @@
 {
-	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "http://data.ashrae.org/standard229/standard229-ruleset-model-report.schema.json",
+	"$schema": "http://json_schema.org/draft_07/schema#",
+	"$id": "http://data.ashrae.org/standard229/standard229_ruleset_model_report.schema.json",
 	"title": "ASHRAE Standard 229 Ruleset Model Report (RMR) Schema",
 	"description": "A summary of building energy model inputs and outputs for confirming rulesets in ASHRAE Standard 229",
 	"type": "object",
 	"additionalProperties": false,
 	"properties": {
-		"transformation-stage": {
+		"transformation_stage": {
 			"description": "Stage in the transformation process in applying ruleset",
 			"type": "string",
 			"enum": [
-				"user",
-				"proposed",
-				"baseline"
+				"USER",
+				"PROPOSED",
+				"BASELINE"
 			],
 			"additionalProperties": false
 		},
-		"test-id": {
-			"description": "Used when instance files are for testing a specific rule and corresponds to Test-ID on Example Test Case V2 tab in Test Case Description spreadsheet",
+		"test_id": {
+			"description": "Used when instance files are for testing a specific rule and corresponds to Test_ID on Example Test Case V2 tab in Test Case Description spreadsheet",
 			"type": "string",
 			"additionalProperties": false
 		},
-		"climate-zone":{
+		"climate_zone":{
 			"description": "The climate zone is based on ASHRAE 169 and Annex 1 of 90.1.",
 			"type": "string",
 			"enum": [
@@ -37,30 +37,30 @@
 			], 
 			"additionalProperties": false
 		},
-		"exterior-lighting-areas": {
+		"ExteriorLightingAreas": {
 			"description": "Lighting for the exterior of a building and the building grounds.",
 			"type": "array",
 			"items": {
-				"$ref": "#/definitions/exterior-lighting-item"
+				"$ref": "#/definitions/exterior_lighting_item"
 			}
 		},
-		"building": {
+		"Building": {
 			"description": "Contains all the details of the building on the site.",
 			"type": "object",
 			"properties": {
 				"name": {
 					"type": "string"
 				},
-				"thermal-blocks": {
+				"ThermalBlocks": {
 					"type": "array",
 					"items": {
-						"$ref": "#/definitions/thermal-block-item"
+						"$ref": "#/definitions/thermal_block_item"
 					}
 				},
-				"hvac-systems":{
+				"HvacSystems":{
 					"type": "array",
 					"items": {
-						"$ref": "#/definitions/hvac-system-item"
+						"$ref": "#/definitions/hvac_system_item"
 					}  
 				}
 			},
@@ -68,54 +68,54 @@
 		}
 	},
 	"definitions": {
-		"thermal-block-item": {
+		"thermal_block_item": {
 			"description": "A collection of one or more HVAC zones grouped together for simulation purposes. Spaces need not be contiguous to be combined within a single thermal block.",
 			"type": "object",
 			"properties": {
 				"name": {
 					"type": "string"
 				},
-				"building-area-type": {
+				"building_area_type": {
 					"type": "string",
 					"enum": [
-						"multifamily",
-						"healthcare-outpatient",
-						"hospital",
-						"hotel",
-						"motel",
-						"office",
-						"restaurant",
-						"retail",
-						"school",
-						"warehouse",
-						"all_others"
+						"MULTIFAMILY",
+						"HEALTHCARE_OUTPATIENT",
+						"HOSPITAL",
+						"HOTEL",
+						"MOTEL",
+						"OFFICE",
+						"RESTAURANT",
+						"RETAIL",
+						"SCHOOL",
+						"WAREHOUSE",
+						"ALL_OTHERS"
 					]
 				},
-				"space-conditioning-category": {
+				"space_conditioning_category": {
 					"type": "string",
 					"enum": [
-						"nonresidential-conditioned-space",
-						"residential-conditioned-space",
-						"semiheated-space"
+						"NONRESIDENTIAL_CONDITIONED_SPACE",
+						"RESIDENTIAL_CONDITIONED_SPACE",
+						"SEMIHEATED_SPACE"
 					]
 				},
-				"exterior-above-grade-walls": {
+				"ExteriorAboveGradeWalls": {
 					"type": "array",
 					"items": {
-						"$ref": "#/definitions/exterior-above-grade-wall-item"
+						"$ref": "#/definitions/exterior_above_grade_wall_item"
 					}
 				},
-				"gross-conditioned-floor-area": {
+				"gross_conditioned_floor_area": {
 					"type": "number",
 					"exclusiveMinimum": 0
 				},
-				"floor-number": {
+				"floor_number": {
 					"type": "number"
 				},
-				"below-grade": {
+				"below_grade": {
 					"type": "boolean"
 				},
-				"served-by-HVAC-systems-tagged": {
+				"served_by_HVAC_systems_tagged": {
 					"type": "array",
 					"items": {
 						"type": "string"
@@ -123,7 +123,7 @@
 				}
 			}
 		},
-		"exterior-above-grade-wall-item":{
+		"exterior_above_grade_wall_item":{
 			"description": "A collection of one or more HVAC zones grouped together for simulation purposes. Spaces need not be contiguous to be combined within a single thermal block.",
 			"type": "object",
 			"properties": {
@@ -136,20 +136,20 @@
 					"minimum": 0,
 					"exclusiveMaximum": 360
 				},
-				"vertical-fenestration-percentage": {
+				"vertical_fenestration_percentage": {
 					"type": "number",
 					"minimum": 0,
 					"maximum": 100
 				},
-				"fenestration-assemblies":{
+				"FenestrationAssemblies":{
 					"type": "array",
 					"items": {
-						"$ref": "#/definitions/fenestration-assembly-item"
+						"$ref": "#/definitions/fenestration_assembly_item"
 					}
 				}
 			}
 		},
-		"exterior-lighting-item": {
+		"exterior_lighting_item": {
 			"description": "Lighting for the exterior of a building and the building grounds.",
 			"type": "object",
 			"properties": {
@@ -159,24 +159,24 @@
 				"category": {
 					"type": "string",
 					"enum": [
-						"parking_lots_and_drives",
-						"walkways_narrow",
-						"walkways_wide",
-						"plaza_areas",
-						"special_feature_areas",
-						"stairways",
-						"main_entries",
-						"other_doors",
-						"canopies",
-						"open_outdoor_sales",
-						"street_frontage_vehicle_sales_lots",
-						"building_facades",
-						"automated_teller_machine",
-						"night_depositories",
-						"gatehouse_inspection_stations",
-						"loading_areas_emergency_responders",
-						"drive_up_window_fast_food",
-						"parking_near_24_hr_retail_entrances"
+						"PARKING_LOTS_AND_DRIVES",
+						"WALKWAYS_NARROW",
+						"WALKWAYS_WIDE",
+						"PLAZA_AREAS",
+						"SPECIAL_FEATURE_AREAS",
+						"STAIRWAYS",
+						"MAIN_ENTRIES",
+						"OTHER_DOORS",
+						"CANOPIES",
+						"OPEN_OUTDOOR_SALES",
+						"STREET_FRONTAGE_VEHICLE_SALES_LOTS",
+						"BUILDING_FACADES",
+						"AUTOMATED_TELLER_MACHINE",
+						"NIGHT_DEPOSITORIES",
+						"GATEHOUSE_INSPECTION_STATIONS",
+						"LOADING_AREAS_EMERGENCY_RESPONDERS",
+						"DRIVE_UP_WINDOW_FAST_FOOD",
+						"PARKING_NEAR_24_HR_RETAIL_ENTRANCES"
 					]
 				},
 				"area": {
@@ -190,52 +190,52 @@
 			},
 			"additionalProperties": false
 		},
-		"hvac-system-item": {
+		"hvac_system_item": {
 			"description": "The equipment, distribution systems, and terminals that provide, either collectively or individually, the processes of heating, ventilating, or air conditioning to a building or portion of a building.",
 			"type": "object",
 			"properties": {
 				"tag": {
 					"type": "string"
 				},
-				"hvac-system-type": {
+				"hvac_system_type": {
 					"type": "string",
 					"enum": [
-						"system_1_PTAC",
-						"system_2_PTHP",
-						"system_3_PSZ-AC",
-						"system_4_PSZ-HP",
-						"system_5_packaged_VAV_with_reheat",
-						"system_6_packaged_VAV_with_PFP_boxes",
-						"system_7_VAV_with_reheat",
-						"system_8_VAV_with_PFP_boxes",
-						"system_9_heating_and_ventilation_gas",
-						"system_10_heating_and_ventilation_electric",
-						"system_11_single_zone_VAV",
-						"system_12_single_zone_constant_hot_water",
-						"system_13_single_zone_constant_electric",
-						"other"
+						"SYSTEM_1_PTAC",
+						"SYSTEM_2_PTHP",
+						"SYSTEM_3_PSZ_AC",
+						"SYSTEM_4_PSZ_HP",
+						"SYSTEM_5_PACKAGED_VAV_WITH_REHEAT",
+						"SYSTEM_6_PACKAGED_VAV_WITH_PFP_BOXES",
+						"SYSTEM_7_VAV_WITH_REHEAT",
+						"SYSTEM_8_VAV_WITH_PFP_BOXES",
+						"SYSTEM_9_HEATING_AND_VENTILATION_GAS",
+						"SYSTEM_10_HEATING_AND_VENTILATION_ELECTRIC",
+						"SYSTEM_11_SINGLE_ZONE_VAV",
+						"SYSTEM_12_SINGLE_ZONE_CONSTANT_HOT_WATER",
+						"SYSTEM_13_SINGLE_ZONE_CONSTANT_ELECTRIC",
+						"OTHER"
 					]
 				},
-				"fan-brake-horsepower": {
+				"fan_brake_horsepower": {
 					"type": "number",
 					"exclusiveMinimum": 0
 				},
-				"design-supply-fan-airflow-rate": {
+				"design_supply_fan_airflow_rate": {
 					"type": "number",
 					"exclusiveMinimum": 0
 				},
-				"sum-of-pressure-drop-adjustments-A": {
+				"sum_of_pressure_drop_adjustments_A": {
 					"type": "number",
 					"minimum": 0
 				},
-				"electric-power-to-fan-motor": {
+				"electric_power_to_fan_motor": {
 					"type": "number",
 					"exclusiveMinimum": 0
 				}
 			},
 			"additionalProperties": false
 		},
-		"fenestration-assembly-item":{
+		"fenestration_assembly_item":{
 			"description": "The description of an overall fenestration assembly.",
 			"type": "object",
 			"properties": {
@@ -247,7 +247,7 @@
 					"type": "number",
 					"minimum": 0
 				},
-				"visible-transmittance":{
+				"visible_transmittance":{
 					"type": "number",
 					"minimum": 0
 				}
@@ -255,6 +255,6 @@
 		}
 	},
 	"required": [
-		"transformation-stage"
+		"transformation_stage"
 	]
 }
