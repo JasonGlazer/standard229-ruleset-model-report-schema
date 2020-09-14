@@ -63,6 +63,8 @@ class RmrTriplet(object):
                 self.check_exterior_lights_6a_1()
             if "18a_1" in rules_to_check:
                 self.check_system_selection_18a_1()
+            if "19v_4" in rules_to_check:
+                self.check_fan_power_19v_4()
 
             if self.proposed_err:
                 print("Proposed RMR file fails.")
@@ -200,3 +202,131 @@ class RmrTriplet(object):
         else:
             print("  No, proposed HeatingVentilationAirConditioningSystems does not match user")
             self.proposed_err = True
+
+    def check_fan_power_19v_4(self):
+        # G3.1.2.9 System Fan Power, Table G3.1.2.9, Table G3.9.1
+        # Users Manual for 90.1-2016 - Example G-M
+
+        SectionG3_1_2_9_mapping = {
+            "SYSTEM_1_PTAC": "CFMs",
+            "SYSTEM_2_PTHP": "CFMs",
+            "SYSTEM_3_PSZ_AC": "bhp/fan motor efficiency",
+            "SYSTEM_4_PSZ_HP": "bhp/fan motor efficiency",
+            "SYSTEM_5_PACKAGED_VAV_WITH_REHEAT": "bhp/fan motor efficiency",
+            "SYSTEM_6_PACKAGED_VAV_WITH_PFP_BOXES": "bhp/fan motor efficiency",
+            "SYSTEM_7_VAV_WITH_REHEAT": "bhp/fan motor efficiency",
+            "SYSTEM_8_VAV_WITH_PFP_BOXES": "bhp/fan motor efficiency",
+            "SYSTEM_9_HEATING_AND_VENTILATION_GAS": "CFMsPlusNonMechanicalCooling",
+            "SYSTEM_10_HEATING_AND_VENTILATION_ELECTRIC": "CFMsPlusNonMechanicalCooling",
+            "SYSTEM_11_SINGLE_ZONE_VAV": "bhp/fan motor efficiency",
+            "SYSTEM_12_SINGLE_ZONE_CONSTANT_HOT_WATER": "bhp/fan motor efficiency",
+            "SYSTEM_13_SINGLE_ZONE_CONSTANT_ELECTRIC": "bhp/fan motor efficiency"
+        }
+
+        TableG3_1_2_9_mapping = {
+            "SYSTEM_3_PSZ_AC": 0.00094,
+            "SYSTEM_4_PSZ_HP": 0.00094,
+            "SYSTEM_5_PACKAGED_VAV_WITH_REHEAT": 0.0013,
+            "SYSTEM_6_PACKAGED_VAV_WITH_PFP_BOXES": 0.0013,
+            "SYSTEM_7_VAV_WITH_REHEAT": 0.0013,
+            "SYSTEM_8_VAV_WITH_PFP_BOXES": 0.0013,
+            "SYSTEM_11_SINGLE_ZONE_VAV": 0.00062,
+            "SYSTEM_12_SINGLE_ZONE_CONSTANT_HOT_WATER": 0.00094,
+            "SYSTEM_13_SINGLE_ZONE_CONSTANT_ELECTRIC": 0.00094
+        }
+
+        TableG3_9_1_mapping = {
+            1.0 : 82.5,
+            1.5 : 84.0,
+            2.0 : 84.0,
+            3.0 : 87.5,
+            5.0 : 87.5,
+            7.5 : 89.5,
+            10.0 : 89.5,
+            15.0 : 91.0,
+            20.0 : 91.0,
+            25.0 : 91.0,
+            30.0 : 92.4,
+            40.0 : 93.0,
+            50.0 : 93.0,
+            60.0 : 93.6,
+            75.0 : 94.1,
+            100.0 : 94.5,
+            125.0 : 94.5,
+            150.0 : 95.0,
+            200.0 : 95.0
+        }
+
+        for hvac_system in self.baseline.Building.HeatingVentilationAirConditioningSystems:
+            print(f"Confirming rule 19v_4 for {hvac_system.tag}")
+            fan_power_calculation_method = SectionG3_1_2_9_mapping[hvac_system.hvac_system_type]
+
+            if fan_power_calculation_method == "CFMsPlusNonMechanicalCooling":
+                print("  Rules not checked for fan power related to non-mechanical cooling.")
+                fan_power_calculation_method = "CFMs"
+
+            if fan_power_calculation_method == "CFMs":
+                expected_electric_power_to_fan_motor = 0.3 * hvac_system.design_supply_fan_airflow_rate
+            elif fan_power_calculation_method == "bhp/fan motor efficiency":
+                supply_volume_multiplier = TableG3_1_2_9_mapping[hvac_system.hvac_system_type]
+                expected_brake_horse_power = supply_volume_multiplier * hvac_system.design_supply_fan_airflow_rate
+
+                if self.nearly_equal(hvac_system.fan_brake_horsepower, expected_brake_horse_power, 0.5):
+                    print(f"  Yes, fan break horsepower {hvac_system.fan_brake_horsepower} nearly same as expected: {expected_brake_horse_power}")
+                else:
+                    print(f"  No, invalid fan break horsepower: {hvac_system.fan_brake_horsepower} but expected {expected_brake_horse_power}")
+                    self.baseline_err = True
+
+                shaft_input_power_limits = TableG3_9_1_mapping.keys()
+                shaft_input_power_selected = 0
+                for limit in shaft_input_power_limits:
+                    # print(limit)
+                    if expected_brake_horse_power <= limit:
+                        shaft_input_power_selected = limit
+                if shaft_input_power_selected != 0:
+                    motor_efficiency = TableG3_9_1_mapping[shaft_input_power_selected]
+                    print(f"  Motor efficiency of {motor_efficiency} selected based {shaft_input_power_selected} which is next larger from {expected_brake_horse_power}")
+                else:
+                    print(f"  Look up of motor efficiency did not work for {hvac_system.tag} with a size of {expected_brake_horse_power} so selecting 95%")
+                    motor_efficiency = 95
+                expected_electric_power_to_fan_motor = expected_brake_horse_power * 0.746 / (motor_efficiency / 100)
+                print(f"  Rules not checked related to A adjustment from Section 6.5.3.1.1 for {hvac_system.tag}")
+            else:
+                print("  No, unknown fan power calculation method")
+                self.proposed_err = True
+
+            if self.nearly_equal(hvac_system.electric_power_to_fan_motor, expected_electric_power_to_fan_motor, 0.5):
+                print(f"  Yes, power {hvac_system.electric_power_to_fan_motor} nearly same as expected: {expected_electric_power_to_fan_motor}")
+            else:
+                print(f"  No, invalid power found: {hvac_system.electric_power_to_fan_motor} but expected {expected_electric_power_to_fan_motor}")
+                self.baseline_err = True
+
+        # remove changing portions to see if rest is the same
+        altered_user = deepcopy(self.user.Building.HeatingVentilationAirConditioningSystems)
+        for hvac_system in altered_user:
+            hvac_system.electric_power_to_fan_motor = 0
+            hvac_system.fan_brake_horsepower = 0
+        altered_baseline = deepcopy(self.baseline.Building.HeatingVentilationAirConditioningSystems)
+        for hvac_system in altered_baseline:
+            hvac_system.electric_power_to_fan_motor = 0
+            hvac_system.fan_brake_horsepower = 0
+        if altered_user == altered_baseline:
+            print("  Yes, rest of baseline HeatingVentilationAirConditioningSystems matches user")
+        else:
+            print("  No, rest of baseline HeatingVentilationAirConditioningSystems does not match user")
+            self.baseline_err = True
+
+        # user and proposed should match
+        if self.user.Building.HeatingVentilationAirConditioningSystems == self.proposed.Building.HeatingVentilationAirConditioningSystems:
+            print("  Yes, proposed HeatingVentilationAirConditioningSystems matches user")
+        else:
+            print("  No, proposed HeatingVentilationAirConditioningSystems does not match user")
+            self.proposed_err = True
+
+
+
+    def nearly_equal(self, a, b, range):
+        absolute_difference = abs(a - b)
+        # print(f"the absolute difference is {absolute_difference} and range {range}")
+        # print(f"so the nearly equal is {absolute_difference < range}")
+        return absolute_difference < range

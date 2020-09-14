@@ -61,7 +61,7 @@
         "fan_brake_horsepower": 156,
         "design_supply_fan_airflow_rate": 120000,
         "sum_of_pressure_drop_adjustments_A": 0,
-        "electric_power_to_fan_motor": 122
+        "electric_power_to_fan_motor": 122.5
       }
     ]
   },

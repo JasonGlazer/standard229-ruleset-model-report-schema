@@ -43,9 +43,9 @@ def recreate_test_cases():
     # system fan power 19v-4
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../system-fan-power-test-19v-4-recreated")
     rmr_triplet.baseline.Building.HeatingVentilationAirConditioningSystems[0].fan_brake_horsepower = 156
-    rmr_triplet.baseline.Building.HeatingVentilationAirConditioningSystems[0].electric_power_to_fan_motor = 122
+    rmr_triplet.baseline.Building.HeatingVentilationAirConditioningSystems[0].electric_power_to_fan_motor = 122.5
     rmr_triplet.save_instances()
-    rmr_triplet.check_rules([])
+    rmr_triplet.check_rules(["19v_4"])
 
     # vertical fenestration area 5c-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../vertical-fenestration-area-test-5c-1-recreated")
