@@ -82,28 +82,29 @@ class RmrTriplet(object):
 
     def check_exterior_lights_6a_1(self):
         # Last paragraph of baseline side of Table G3.1 part 6 and Table G3.6
-        tableG3_6 = {"PARKING_LOTS_AND_DRIVES": ["tradable" ,0.15, "W/sqft"],  # should be 0.15
-                        "WALKWAYS_NARROW": ["tradable", 1.0, "W/ft"],
-                        "WALKWAYS_WIDE": ["tradable", 0.2, "W/sqft"],
-                        "PLAZA_AREAS": ["tradable", 0.2, "W/sqft"],
-                        "SPECIAL_FEATURE_AREAS": ["tradable", 0.2, "W/sqft"],
-                        "STAIRWAYS": ["tradable", 1.0, "W/sqft"],
-                        "MAIN_ENTRIES": ["tradable", 30, "W/ft"],
-                        "OTHER_DOORS": ["tradable", 20, "W/ft"],
-                        "CANOPIES": ["tradable", 1.25, "W/sqft"],
-                        "OPEN_OUTDOOR_SALES": ["tradable", 0.5, "W/sqft"],
-                        "STREET_FRONTAGE_VEHICLE_SALES_LOTS": ["tradable", 20, "W/ft"],
-                        "BUILDING_FACADES": ["nontradable", 0.0, ""],
-                        "AUTOMATED_TELLER_MACHINE": ["nontradable", 0.0, ""],
-                        "NIGHT_DEPOSITORIES": ["nontradable", 0.0, ""],
-                        "GATEHOUSE_INSPECTION_STATIONS": ["nontradable", 0.0, ""],
-                        "LOADING_AREAS_EMERGENCY_RESPONDERS": ["nontradable", 0.0, ""],
-                        "DRIVE_UP_WINDOW_FAST_FOOD": ["nontradable", 0.0, ""],
-                        "PARKING_NEAR_24_HR_RETAIL_ENTRANCES": ["nontradable", 0.0, ""]}
+        table_g3_6 = {
+            "PARKING_LOTS_AND_DRIVES": ["tradable", 0.15, "W/sqft"],  # should be 0.15
+            "WALKWAYS_NARROW": ["tradable", 1.0, "W/ft"],
+            "WALKWAYS_WIDE": ["tradable", 0.2, "W/sqft"],
+            "PLAZA_AREAS": ["tradable", 0.2, "W/sqft"],
+            "SPECIAL_FEATURE_AREAS": ["tradable", 0.2, "W/sqft"],
+            "STAIRWAYS": ["tradable", 1.0, "W/sqft"],
+            "MAIN_ENTRIES": ["tradable", 30, "W/ft"],
+            "OTHER_DOORS": ["tradable", 20, "W/ft"],
+            "CANOPIES": ["tradable", 1.25, "W/sqft"],
+            "OPEN_OUTDOOR_SALES": ["tradable", 0.5, "W/sqft"],
+            "STREET_FRONTAGE_VEHICLE_SALES_LOTS": ["tradable", 20, "W/ft"],
+            "BUILDING_FACADES": ["nontradable", 0.0, ""],
+            "AUTOMATED_TELLER_MACHINE": ["nontradable", 0.0, ""],
+            "NIGHT_DEPOSITORIES": ["nontradable", 0.0, ""],
+            "GATEHOUSE_INSPECTION_STATIONS": ["nontradable", 0.0, ""],
+            "LOADING_AREAS_EMERGENCY_RESPONDERS": ["nontradable", 0.0, ""],
+            "DRIVE_UP_WINDOW_FAST_FOOD": ["nontradable", 0.0, ""],
+            "PARKING_NEAR_24_HR_RETAIL_ENTRANCES": ["nontradable", 0.0, ""]}
 
         for exterior_lighting_areas in self.baseline.ExteriorLightingAreas:
             print(f"Confirming rule 6a_1 for {exterior_lighting_areas.name}")
-            status, multiplier, units = tableG3_6[exterior_lighting_areas.category]
+            status, multiplier, units = table_g3_6[exterior_lighting_areas.category]
             if status == "tradable":
                 if units == "W/sqft":
                     expected_power = exterior_lighting_areas.area * multiplier
@@ -137,13 +138,12 @@ class RmrTriplet(object):
             print("  No, proposed ExteriorLightingAreas does not match user")
             self.proposed_err = True
 
-
     def check_system_selection_18a_1(self):
         # G3.1.1a, table G3.1.1-3, table G3.1.1-4
 
-        TableG3_1_1_3 = {
+        table_g3_1_1_3 = {
             "RESIDENTIAL": ["SYSTEM_1_PTAC", "SYSTEM_2_PTHP"],
-            "PUBLIC_ASSEMBLY_SMALL": ["SYSTEM_3_PSZ_AC","SYSTEM_4_PSZ_HP"],
+            "PUBLIC_ASSEMBLY_SMALL": ["SYSTEM_3_PSZ_AC", "SYSTEM_4_PSZ_HP"],
             "PUBLIC_ASSEMBLY_LARGE": ["SYSTEM_12_SINGLE_ZONE_CONSTANT_HOT_WATER", "SYSTEM_13_SINGLE_ZONE_CONSTANT_ELECTRIC"],
             "HEATED_ONLY_STORAGE": ["SYSTEM_9_HEATING_AND_VENTILATION_GAS", "SYSTEM_10_HEATING_AND_VENTILATION_ELECTRIC"],
             "RETAIL_TWO_FLOOR_OR_LESS": ["SYSTEM_3_PSZ_AC", "SYSTEM_4_PSZ_HP"],
@@ -170,14 +170,14 @@ class RmrTriplet(object):
                 print("  Rules not checked that apply to buildings other than office buildings.")
             else:
                 building_type_subcategory = "OTHER_NONRESIDENTIAL_MEDIUM"
-                if total_area < 25000 and highest_floor <=3:
+                if total_area < 25000 and highest_floor <= 3:
                     building_type_subcategory = "OTHER_NONRESIDENTIAL_SMALL"
                 elif total_area > 150000 or highest_floor > 5:
                     building_type_subcategory = "OTHER_NONRESIDENTIAL_LARGE"
 
-                expected_baseline_system, baseline_system_climate_zones_0_to_3A = TableG3_1_1_3[building_type_subcategory]
+                expected_baseline_system, baseline_system_climate_zones_0_to_3a = table_g3_1_1_3[building_type_subcategory]
                 if self.user.climate_zone in ["0A", "0B", "1A", "1B", "2A", "2B", "3A", "3B", "3C"]:
-                    expected_baseline_system = baseline_system_climate_zones_0_to_3A
+                    expected_baseline_system = baseline_system_climate_zones_0_to_3a
 
                 for hvac_system in self.baseline.Building.HeatingVentilationAirConditioningSystems:
                     print(f"Confirming rule 18a_1 for {hvac_system.tag}")
@@ -211,7 +211,7 @@ class RmrTriplet(object):
         # G3.1.2.9 System Fan Power, Table G3.1.2.9, Table G3.9.1
         # Users Manual for 90.1-2016 - Example G-M
 
-        SectionG3_1_2_9_mapping = {
+        section_g3_1_2_9_mapping = {
             "SYSTEM_1_PTAC": "CFMs",
             "SYSTEM_2_PTHP": "CFMs",
             "SYSTEM_3_PSZ_AC": "bhp/fan motor efficiency",
@@ -227,7 +227,7 @@ class RmrTriplet(object):
             "SYSTEM_13_SINGLE_ZONE_CONSTANT_ELECTRIC": "bhp/fan motor efficiency"
         }
 
-        TableG3_1_2_9_mapping = {
+        table_g3_1_2_9_mapping = {
             "SYSTEM_3_PSZ_AC": 0.00094,
             "SYSTEM_4_PSZ_HP": 0.00094,
             "SYSTEM_5_PACKAGED_VAV_WITH_REHEAT": 0.0013,
@@ -239,32 +239,33 @@ class RmrTriplet(object):
             "SYSTEM_13_SINGLE_ZONE_CONSTANT_ELECTRIC": 0.00094
         }
 
-        TableG3_9_1_mapping = {
-            1.0 : 82.5,
-            1.5 : 84.0,
-            2.0 : 84.0,
-            3.0 : 87.5,
-            5.0 : 87.5,
-            7.5 : 89.5,
-            10.0 : 89.5,
-            15.0 : 91.0,
-            20.0 : 91.0,
-            25.0 : 91.0,
-            30.0 : 92.4,
-            40.0 : 93.0,
-            50.0 : 93.0,
-            60.0 : 93.6,
-            75.0 : 94.1,
-            100.0 : 94.5,
-            125.0 : 94.5,
-            150.0 : 95.0,
-            200.0 : 95.0
+        table_g3_9_1_mapping = {
+            1.0: 82.5,
+            1.5: 84.0,
+            2.0: 84.0,
+            3.0: 87.5,
+            5.0: 87.5,
+            7.5: 89.5,
+            10.0: 89.5,
+            15.0: 91.0,
+            20.0: 91.0,
+            25.0: 91.0,
+            30.0: 92.4,
+            40.0: 93.0,
+            50.0: 93.0,
+            60.0: 93.6,
+            75.0: 94.1,
+            100.0: 94.5,
+            125.0: 94.5,
+            150.0: 95.0,
+            200.0: 95.0
         }
 
         for hvac_system in self.baseline.Building.HeatingVentilationAirConditioningSystems:
             print(f"Confirming rule 19v_4 for {hvac_system.tag}")
-            fan_power_calculation_method = SectionG3_1_2_9_mapping[hvac_system.hvac_system_type]
+            fan_power_calculation_method = section_g3_1_2_9_mapping[hvac_system.hvac_system_type]
 
+            expected_electric_power_to_fan_motor = 0
             if fan_power_calculation_method == "CFMsPlusNonMechanicalCooling":
                 print("  Rules not checked for fan power related to non-mechanical cooling.")
                 fan_power_calculation_method = "CFMs"
@@ -272,7 +273,7 @@ class RmrTriplet(object):
             if fan_power_calculation_method == "CFMs":
                 expected_electric_power_to_fan_motor = 0.3 * hvac_system.design_supply_fan_airflow_rate
             elif fan_power_calculation_method == "bhp/fan motor efficiency":
-                supply_volume_multiplier = TableG3_1_2_9_mapping[hvac_system.hvac_system_type]
+                supply_volume_multiplier = table_g3_1_2_9_mapping[hvac_system.hvac_system_type]
                 expected_brake_horse_power = supply_volume_multiplier * hvac_system.design_supply_fan_airflow_rate
 
                 if self.nearly_equal(hvac_system.fan_brake_horsepower, expected_brake_horse_power, 0.5):
@@ -281,14 +282,14 @@ class RmrTriplet(object):
                     print(f"  No, invalid fan break horsepower: {hvac_system.fan_brake_horsepower} but expected {expected_brake_horse_power}")
                     self.baseline_err = True
 
-                shaft_input_power_limits = TableG3_9_1_mapping.keys()
+                shaft_input_power_limits = table_g3_9_1_mapping.keys()
                 shaft_input_power_selected = 0
                 for limit in shaft_input_power_limits:
                     # print(limit)
                     if expected_brake_horse_power <= limit:
                         shaft_input_power_selected = limit
                 if shaft_input_power_selected != 0:
-                    motor_efficiency = TableG3_9_1_mapping[shaft_input_power_selected]
+                    motor_efficiency = table_g3_9_1_mapping[shaft_input_power_selected]
                     print(f"  Motor efficiency of {motor_efficiency} selected based {shaft_input_power_selected} which is next larger from {expected_brake_horse_power}")
                 else:
                     print(f"  Look up of motor efficiency did not work for {hvac_system.tag} with a size of {expected_brake_horse_power} so selecting 95%")
@@ -330,10 +331,10 @@ class RmrTriplet(object):
     def vertical_fenestration_percentage_5c_1(self):
         # Table G3.1 Part 5 - Baseline paragraph (c)
         # Table G3.1.1-1
-        TableG3_1_1_1 = {
+        table_g3_1_1_1 = {
             "GROCERY_STORE": 0.07,
-            "HEALTHCARE_OUTPATIENT" : 0.21,
-            "HOSPITAL" : 0.27,
+            "HEALTHCARE_OUTPATIENT": 0.21,
+            "HOSPITAL": 0.27,
             "HOTEL_LARGE": 0.24,
             "HOTEL_SMALL": 0.34,
             "OFFICE_SMALL": 0.19,
@@ -378,8 +379,8 @@ class RmrTriplet(object):
                 else:
                     first_building_area_type = "OFFICE_MEDIUM"
 
-            if first_building_area_type in TableG3_1_1_1.keys():
-                expected_fenestration_fraction = TableG3_1_1_1[first_building_area_type]
+            if first_building_area_type in table_g3_1_1_1.keys():
+                expected_fenestration_fraction = table_g3_1_1_1[first_building_area_type]
                 print(f"  The expected fenestration fraction is {expected_fenestration_fraction} for building type {first_building_area_type}")
                 expected_total_fenestration_area = expected_fenestration_fraction * user_total_wall_area
                 baseline_total_fenestration_area = 0
@@ -419,7 +420,7 @@ class RmrTriplet(object):
     def vertical_fenestration_assembly_5h_1(self):
         # Table G3.1 Part 5 - Baseline paragraph (d) Vertical Fenestration Assemblies
         # Table G3.4-4 Envelope for Climate Zones 4 (A,B,C)
-        TableG_4_climate_zone_lookup = {
+        table_g_4_climate_zone_lookup = {
             "0A": "0A_0B_1A_1B",
             "0B": "0A_0B_1A_1B",
             "1A": "0A_0B_1A_1B",
@@ -441,13 +442,13 @@ class RmrTriplet(object):
             "8": "8"
         }
 
-        TableG3_4_fenestration_assembly ={
-            "0A_0B_1A_1B" :
+        table_g3_4_fenestration_assembly = {
+            "0A_0B_1A_1B":
                 {
-                    "NONRESIDENTIAL" : [
-                        [0.0, 40.0, 1.22, 0.25, 0.28] # fenestration percentage low, fenestration percentage low, U, SHGC, VT
+                    "NONRESIDENTIAL": [
+                        [0.0, 40.0, 1.22, 0.25, 0.28]   # fenestration percentage low, fenestration percentage low, U, SHGC, VT
                     ],
-                    "RESIDENTIAL" : [
+                    "RESIDENTIAL": [
                         [0.0, 40.0, 1.22, 0.25, 0.28]
                     ],
                     "SEMIHEATED": [
@@ -563,7 +564,7 @@ class RmrTriplet(object):
                 }
         }
 
-        combined_climate_zone = TableG_4_climate_zone_lookup[self.user.climate_zone]
+        combined_climate_zone = table_g_4_climate_zone_lookup[self.user.climate_zone]
         for thermal_block in self.baseline.Building.ThermalBlocks:
             print(f"  For thermal block{thermal_block.name}")
             if thermal_block.building_area_type == "MULTIFAMILY":
@@ -573,13 +574,14 @@ class RmrTriplet(object):
             else:
                 space_conditioning_category = "NONRESIDENTIAL"
             for exterior_above_grade_wall in thermal_block.ExteriorAboveGradeWalls:
-                fenestration_percentage =  exterior_above_grade_wall.vertical_fenestration_percentage
+                fenestration_percentage = exterior_above_grade_wall.vertical_fenestration_percentage
                 if fenestration_percentage > 40:
                     fenestration_percentage = 40
-                criteria_options = TableG3_4_fenestration_assembly[combined_climate_zone][space_conditioning_category]
+                criteria_options = table_g3_4_fenestration_assembly[combined_climate_zone][space_conditioning_category]
+                expected_u_all, expected_shgc_all, expected_vt_all = 0, 0, 0
                 for criteria_option in criteria_options:
                     low, high, expected_u_all, expected_shgc_all, expected_vt_all = criteria_option
-                    if fenestration_percentage > low and fenestration_percentage < high:
+                    if low < fenestration_percentage < high:
                         break
                 for fenestration_assembly in exterior_above_grade_wall.FenestrationAssemblies:
                     if fenestration_assembly.u_factor == expected_u_all:
@@ -626,10 +628,9 @@ class RmrTriplet(object):
             print("  No, proposed ThermalBlocks does not match user")
             self.proposed_err = True
 
-
-
-    def nearly_equal(self, a, b, range):
+    @staticmethod
+    def nearly_equal(a, b, acceptable_range):
         absolute_difference = abs(a - b)
         # print(f"the absolute difference is {absolute_difference} and range {range}")
         # print(f"so the nearly equal is {absolute_difference < range}")
-        return absolute_difference < range
+        return absolute_difference < acceptable_range
