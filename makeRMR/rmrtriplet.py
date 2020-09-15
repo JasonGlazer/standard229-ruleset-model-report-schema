@@ -49,7 +49,7 @@ class RmrTriplet(object):
 
     def check_rules(self, rules_to_check):
         if "all" in rules_to_check:
-            rules_to_check = ["6a_1", "18a_1"]
+            rules_to_check = ["6a_1", "18a_1", "19v_4", "5c_1"]
 
         if rules_to_check:
             print("------------------------")
@@ -65,6 +65,8 @@ class RmrTriplet(object):
                 self.check_system_selection_18a_1()
             if "19v_4" in rules_to_check:
                 self.check_fan_power_19v_4()
+            if "5c_1" in rules_to_check:
+                self.vertical_fenestration_percentage_5c_1()
 
             if self.proposed_err:
                 print("Proposed RMR file fails.")
@@ -321,6 +323,95 @@ class RmrTriplet(object):
             print("  Yes, proposed HeatingVentilationAirConditioningSystems matches user")
         else:
             print("  No, proposed HeatingVentilationAirConditioningSystems does not match user")
+            self.proposed_err = True
+
+    def vertical_fenestration_percentage_5c_1(self):
+        # Table G3.1 Part 5 - Baseline paragraph (c)
+        # Table G3.1.1-1
+        TableG3_1_1_1 = {
+            "GROCERY_STORE": 0.07,
+            "HEALTHCARE_OUTPATIENT" : 0.21,
+            "HOSPITAL" : 0.27,
+            "HOTEL_LARGE": 0.24,
+            "HOTEL_SMALL": 0.34,
+            "OFFICE_SMALL": 0.19,
+            "OFFICE_MEDIUM": 0.31,
+            "OFFICE_LARGE": 0.40,
+            "RESTAURANT_QUICK_SERVICE": 0.34,
+            "RESTAURANT_FULL_SERVICE0": 0.24,
+            "RETAIL_STAND_ALONE": 0.11,
+            "RETAIL_STRIP_MALL": 0.20,
+            "SCHOOL_PRIMARY": 0.22,
+            "SCHOOL_SECONDARY_AND_UNIVERSITY": 0.22,
+            "WAREHOUSE_NON_REFRIGERATED": 0.06
+        }
+        user_total_floor_area = 0
+        user_total_wall_area = 0
+        user_total_fenestration_area = 0
+        first_building_area_type = self.user.Building.ThermalBlocks[0].building_area_type
+        all_area_types_same = True
+        for thermal_block in self.user.Building.ThermalBlocks:
+            user_total_floor_area += thermal_block.gross_conditioned_floor_area
+            if thermal_block.building_area_type != first_building_area_type:
+                all_area_types_same = False
+            for exterior_above_grade_wall in thermal_block.ExteriorAboveGradeWalls:
+                user_total_wall_area += exterior_above_grade_wall.area
+                user_total_fenestration_area += exterior_above_grade_wall.area * exterior_above_grade_wall.vertical_fenestration_percentage / 100
+
+        user_overall_fenestration_fraction = user_total_fenestration_area / user_total_wall_area
+
+        print(f"  User total floor area:              {user_total_floor_area}")
+        print(f"  User total wall area:               {user_total_wall_area}")
+        print(f"  User total fenestration area:       {user_total_fenestration_area}")
+        print(f"  User overall fenestration fraction: {user_overall_fenestration_fraction}")
+
+        if not all_area_types_same:
+            print("  Rules not checked that apply to buildings with multiple building types.")
+        else:
+            if first_building_area_type == "OFFICE":
+                if user_total_floor_area <= 5000:
+                    first_building_area_type = "OFFICE_SMALL"
+                elif user_total_floor_area > 50000:
+                    first_building_area_type = "OFFICE_LARGE"
+                else:
+                    first_building_area_type = "OFFICE_MEDIUM"
+
+            if first_building_area_type in TableG3_1_1_1.keys():
+                expected_fenestration_fraction = TableG3_1_1_1[first_building_area_type]
+                print(f"  The expected fenestration fraction is {expected_fenestration_fraction} for building type {first_building_area_type}")
+                expected_total_fenestration_area = expected_fenestration_fraction * user_total_wall_area
+                baseline_total_fenestration_area = 0
+                for thermal_block in self.baseline.Building.ThermalBlocks:
+                    for exterior_above_grade_wall in thermal_block.ExteriorAboveGradeWalls:
+                        baseline_total_fenestration_area += exterior_above_grade_wall.area * exterior_above_grade_wall.vertical_fenestration_percentage / 100
+                if self.nearly_equal(expected_total_fenestration_area, baseline_total_fenestration_area, 1):
+                    print(f"  Yes, baseline fenestration area {baseline_total_fenestration_area} as expected.")
+                else:
+                    print(f"  No, baseline fenestration area {baseline_total_fenestration_area} does not match expected fenestration area {expected_total_fenestration_area}")
+                    self.proposed_err = True
+            else:
+                print(f"  Rules not checked that apply to buildings with building type: {first_building_area_type}")
+
+        # remove changing portions to see if rest is the same
+        altered_user = deepcopy(self.user.Building.ThermalBlocks)
+        for thermal_block in altered_user:
+            for exterior_above_grade_wall in thermal_block.ExteriorAboveGradeWalls:
+                exterior_above_grade_wall.vertical_fenestration_percentage = 0
+        altered_baseline = deepcopy(self.baseline.Building.ThermalBlocks)
+        for thermal_block in altered_baseline:
+            for exterior_above_grade_wall in thermal_block.ExteriorAboveGradeWalls:
+                exterior_above_grade_wall.vertical_fenestration_percentage = 0
+        if altered_user == altered_baseline:
+            print("  Yes, rest of baseline ThermalBlocks matches user")
+        else:
+            print("  No, rest of baseline ThermalBlocks does not match user")
+            self.baseline_err = True
+
+        # user and proposed should match
+        if self.user.Building.ThermalBlocks == self.proposed.Building.ThermalBlocks:
+            print("  Yes, proposed ThermalBlocks matches user")
+        else:
+            print("  No, proposed ThermalBlocks does not match user")
             self.proposed_err = True
 
 

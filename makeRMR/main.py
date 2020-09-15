@@ -49,10 +49,10 @@ def recreate_test_cases():
 
     # vertical fenestration area 5c-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../vertical-fenestration-area-test-5c-1-recreated")
-    rmr_triplet.baseline.Building.ThermalBlocks[0].ExteriorAboveGradeWalls[0].vertical_fenestration_percentage = 19
-    rmr_triplet.baseline.Building.ThermalBlocks[1].ExteriorAboveGradeWalls[0].vertical_fenestration_percentage = 19
+    rmr_triplet.baseline.Building.ThermalBlocks[0].ExteriorAboveGradeWalls[0].vertical_fenestration_percentage = 31
+    rmr_triplet.baseline.Building.ThermalBlocks[1].ExteriorAboveGradeWalls[0].vertical_fenestration_percentage = 31
     rmr_triplet.save_instances()
-    rmr_triplet.check_rules([])
+    rmr_triplet.check_rules(["5c_1"])
 
     # vertical fenestration assembly 5h-1
     rmr_triplet = RmrTriplet("../combined-feasibility.user.json", "../vertical-fenestration-assembly-test-5h-1-recreated")

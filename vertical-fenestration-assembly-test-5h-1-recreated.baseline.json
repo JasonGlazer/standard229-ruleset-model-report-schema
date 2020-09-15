@@ -18,7 +18,7 @@
           {
             "area": 5000,
             "azimuth": 0,
-            "vertical_fenestration_percentage": 30,
+            "vertical_fenestration_percentage": 38,
             "FenestrationAssemblies": [
               {
                 "u_factor": 0.57,
@@ -42,7 +42,7 @@
           {
             "area": 5000,
             "azimuth": 180,
-            "vertical_fenestration_percentage": 30,
+            "vertical_fenestration_percentage": 38,
             "FenestrationAssemblies": [
               {
                 "u_factor": 0.57,
