@@ -61,7 +61,7 @@ def recreate_test_cases():
         thermal_block.ExteriorAboveGradeWalls[0].FenestrationAssemblies[0].solar_heat_gain_coefficient = 0.39
         thermal_block.ExteriorAboveGradeWalls[0].FenestrationAssemblies[0].visible_transmittance = 0.43
     rmr_triplet.save_instances()
-    rmr_triplet.check_rules([])
+    rmr_triplet.check_rules(["5h_1"])
 
 if __name__ == '__main__':
     #bad_validate_rmr()

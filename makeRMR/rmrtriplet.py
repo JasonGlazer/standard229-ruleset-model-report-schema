@@ -49,7 +49,7 @@ class RmrTriplet(object):
 
     def check_rules(self, rules_to_check):
         if "all" in rules_to_check:
-            rules_to_check = ["6a_1", "18a_1", "19v_4", "5c_1"]
+            rules_to_check = ["6a_1", "18a_1", "19v_4", "5c_1", "5h_1"]
 
         if rules_to_check:
             print("------------------------")
@@ -67,6 +67,8 @@ class RmrTriplet(object):
                 self.check_fan_power_19v_4()
             if "5c_1" in rules_to_check:
                 self.vertical_fenestration_percentage_5c_1()
+            if "5h_1" in rules_to_check:
+                self.vertical_fenestration_assembly_5h_1()
 
             if self.proposed_err:
                 print("Proposed RMR file fails.")
@@ -123,9 +125,9 @@ class RmrTriplet(object):
         for exterior_lighting_areas in altered_baseline:
             exterior_lighting_areas.power = 0
         if altered_user == altered_baseline:
-            print("  Yes, rest of baseline ExteriorLightingAreas matches user")
+            print("  Yes, the other portions of baseline ExteriorLightingAreas matches user")
         else:
-            print("  No, rest of baseline ExteriorLightingAreas does not match user")
+            print("  No, the other portions of baseline ExteriorLightingAreas does not match user")
             self.baseline_err = True
 
         # user and proposed should match
@@ -193,9 +195,9 @@ class RmrTriplet(object):
         for hvac_system in altered_baseline:
             hvac_system.hvac_system_type = ""
         if altered_user == altered_baseline:
-            print("  Yes, rest of baseline HeatingVentilationAirConditioningSystems matches user")
+            print("  Yes, the other portions of baseline HeatingVentilationAirConditioningSystems matches user")
         else:
-            print("  No, rest of baseline HeatingVentilationAirConditioningSystems does not match user")
+            print("  No, the other portions of baseline HeatingVentilationAirConditioningSystems does not match user")
             self.baseline_err = True
 
         # user and proposed should match
@@ -313,9 +315,9 @@ class RmrTriplet(object):
             hvac_system.electric_power_to_fan_motor = 0
             hvac_system.fan_brake_horsepower = 0
         if altered_user == altered_baseline:
-            print("  Yes, rest of baseline HeatingVentilationAirConditioningSystems matches user")
+            print("  Yes, the other portions of baseline HeatingVentilationAirConditioningSystems matches user")
         else:
-            print("  No, rest of baseline HeatingVentilationAirConditioningSystems does not match user")
+            print("  No, the other portions of baseline HeatingVentilationAirConditioningSystems does not match user")
             self.baseline_err = True
 
         # user and proposed should match
@@ -402,9 +404,219 @@ class RmrTriplet(object):
             for exterior_above_grade_wall in thermal_block.ExteriorAboveGradeWalls:
                 exterior_above_grade_wall.vertical_fenestration_percentage = 0
         if altered_user == altered_baseline:
-            print("  Yes, rest of baseline ThermalBlocks matches user")
+            print("  Yes, the other portions of baseline ThermalBlocks matches user")
         else:
-            print("  No, rest of baseline ThermalBlocks does not match user")
+            print("  No, the other portions of baseline ThermalBlocks does not match user")
+            self.baseline_err = True
+
+        # user and proposed should match
+        if self.user.Building.ThermalBlocks == self.proposed.Building.ThermalBlocks:
+            print("  Yes, proposed ThermalBlocks matches user")
+        else:
+            print("  No, proposed ThermalBlocks does not match user")
+            self.proposed_err = True
+
+    def vertical_fenestration_assembly_5h_1(self):
+        # Table G3.1 Part 5 - Baseline paragraph (d) Vertical Fenestration Assemblies
+        # Table G3.4-4 Envelope for Climate Zones 4 (A,B,C)
+        TableG_4_climate_zone_lookup = {
+            "0A": "0A_0B_1A_1B",
+            "0B": "0A_0B_1A_1B",
+            "1A": "0A_0B_1A_1B",
+            "1B": "0A_0B_1A_1B",
+            "2A": "2A_2B",
+            "2B": "2A_2B",
+            "3A": "3A_3B",
+            "3B": "3A_3B",
+            "3C": "3C",
+            "4A": "4A_4B_4C",
+            "4B": "4A_4B_4C",
+            "4C": "4A_4B_4C",
+            "5A": "5A_5B_5C",
+            "5B": "5A_5B_5C",
+            "5C": "5A_5B_5C",
+            "6A": "6A_6B",
+            "6B": "6A_6B",
+            "7": "7",
+            "8": "8"
+        }
+
+        TableG3_4_fenestration_assembly ={
+            "0A_0B_1A_1B" :
+                {
+                    "NONRESIDENTIAL" : [
+                        [0.0, 40.0, 1.22, 0.25, 0.28] # fenestration percentage low, fenestration percentage low, U, SHGC, VT
+                    ],
+                    "RESIDENTIAL" : [
+                        [0.0, 40.0, 1.22, 0.25, 0.28]
+                    ],
+                    "SEMIHEATED": [
+                        [0.0, 40.0, 1.22, 0.40, 0.44]
+                    ]
+                },
+            "2A_2B":
+                {
+                    "NONRESIDENTIAL": [
+                        [0.0, 40.0, 1.22, 0.25, 0.28]
+                    ],
+                    "RESIDENTIAL": [
+                        [0.0, 10.0, 1.22, 0.39, 0.43],
+                        [10.1, 40.0, 1.22, 0.25, 0.28]
+                    ],
+                    "SEMIHEATED": [
+                        [0.0, 40.0, 1.22, 0.40, 0.44]
+                    ],
+                },
+            "3A_3B":
+                {
+                    "NONRESIDENTIAL": [
+                        [0.0, 10.0, 0.57, 0.39, 0.43],
+                        [10.1, 40.0, 0.57, 0.25, 0.28]
+                    ],
+                    "RESIDENTIAL": [
+                        [0.0, 20.0, 0.57, 0.39, 0.43],
+                        [20.1, 40.0, 0.57, 0.25, 0.28]
+                    ],
+                    "SEMIHEATED": [
+                        [0.0, 40.0, 1.22, 0.40, 0.44]
+                    ],
+                },
+            "3C":
+                {
+                    "NONRESIDENTIAL": [
+                        [0.0, 10.0, 1.22, 0.61, 0.67],
+                        [10.1, 30.0, 1.22, 0.39, 0.43],
+                        [30.1, 40.0, 1.22, 0.34, 0.37]
+                    ],
+                    "RESIDENTIAL": [
+                        [0.0, 20.0, 1.22, 0.61, 0.67],
+                        [20.1, 30.0, 1.22, 0.39, 0.43],
+                        [30.1, 40.0, 1.22, 0.34, 0.37]
+                    ],
+                    "SEMIHEATED": [
+                        [0.0, 40.0, 1.22, 0.40, 0.44]
+                    ],
+                },
+            "4A_4B_4C":
+                {
+                    "NONRESIDENTIAL": [
+                        [0.0, 40.0, 0.57, 0.39, 0.43]
+                    ],
+                    "RESIDENTIAL": [
+                        [0.0, 40.0, 0.57, 0.39, 0.43]
+                    ],
+                    "SEMIHEATED": [
+                        [0.0, 40.0, 1.22, 0.40, 0.44]
+                    ],
+                },
+            "5A_5B_5C":
+                {
+                    "NONRESIDENTIAL": [
+                        [0.0, 10.0, 0.57, 0.49, 0.54],
+                        [10.1, 40.0, 0.57, 0.39, 0.43]
+                    ],
+                    "RESIDENTIAL": [
+                        [0.0, 10.0, 0.57, 0.49, 0.54],
+                        [10.1, 40.0, 0.57, 0.39, 0.43]
+                    ],
+                    "SEMIHEATED": [
+                        [0.0, 40.0, 1.22, 0.40, 0.44]
+                    ],
+                },
+            "6A_6B":
+                {
+                    "NONRESIDENTIAL": [
+                        [0.0, 10.0, 0.57, 0.49, 0.54],
+                        [10.1, 40.0, 0.57, 0.39, 0.43]
+                    ],
+                    "RESIDENTIAL": [
+                        [0.0, 10.0, 0.57, 0.49, 0.54],
+                        [10.1, 40.0, 0.57, 0.39, 0.43]
+                    ],
+                    "SEMIHEATED": [
+                        [0.0, 40.0, 1.22, 0.40, 0.44]
+                    ],
+                },
+            "7":
+                {
+                    "NONRESIDENTIAL": [
+                        [0.0, 40.0, 0.57, 0.49, 0.54]
+                    ],
+                    "RESIDENTIAL": [
+                        [0.0, 40.0, 0.57, 0.49, 0.54]
+                    ],
+                    "SEMIHEATED": [
+                        [0.0, 40.0, 1.22, 0.40, 0.44]
+                    ],
+                },
+            "8":
+                {
+                    "NONRESIDENTIAL": [
+                        [0.0, 40.0, 0.46, 0.40, 0.44]
+                    ],
+                    "RESIDENTIAL": [
+                        [0.0, 40.0, 0.46, 0.40, 0.44]
+                    ],
+                    "SEMIHEATED": [
+                        [0.0, 40.0, 1.22, 0.40, 0.44]
+                    ],
+                }
+        }
+
+        combined_climate_zone = TableG_4_climate_zone_lookup[self.user.climate_zone]
+        for thermal_block in self.baseline.Building.ThermalBlocks:
+            print(f"  For thermal block{thermal_block.name}")
+            if thermal_block.building_area_type == "MULTIFAMILY":
+                space_conditioning_category = "RESIDENTIAL"
+            elif thermal_block.building_area_type == "WAREHOUSE":
+                space_conditioning_category = "SEMIHEATED"
+            else:
+                space_conditioning_category = "NONRESIDENTIAL"
+            for exterior_above_grade_wall in thermal_block.ExteriorAboveGradeWalls:
+                fenestration_percentage =  exterior_above_grade_wall.vertical_fenestration_percentage
+                if fenestration_percentage > 40:
+                    fenestration_percentage = 40
+                criteria_options = TableG3_4_fenestration_assembly[combined_climate_zone][space_conditioning_category]
+                for criteria_option in criteria_options:
+                    low, high, expected_u_all, expected_shgc_all, expected_vt_all = criteria_option
+                    if fenestration_percentage > low and fenestration_percentage < high:
+                        break
+                for fenestration_assembly in exterior_above_grade_wall.FenestrationAssemblies:
+                    if fenestration_assembly.u_factor == expected_u_all:
+                        print(f"  Yes, baseline fenestration U factor {expected_u_all} as expected.")
+                    else:
+                        print(f"  No, baseline fenestration U factor {fenestration_assembly.u_factor} does not match expected fenestration U factor {expected_u_all}")
+                        self.proposed_err = True
+                    if fenestration_assembly.solar_heat_gain_coefficient == expected_shgc_all:
+                        print(f"  Yes, baseline fenestration SHGC {expected_shgc_all} as expected.")
+                    else:
+                        print(f"  No, baseline fenestration SHGC {fenestration_assembly.solar_heat_gain_coefficient} does not match expected fenestration SHGC {expected_shgc_all}")
+                        self.proposed_err = True
+                    if fenestration_assembly.visible_transmittance == expected_vt_all:
+                        print(f"  Yes, baseline fenestration VT {expected_vt_all} as expected.")
+                    else:
+                        print(f"  No, baseline fenestration VT {fenestration_assembly.visible_transmittance} does not match expected fenestration VT {expected_vt_all}")
+                        self.proposed_err = True
+
+        # remove changing portions to see if rest is the same
+        altered_user = deepcopy(self.user.Building.ThermalBlocks)
+        for thermal_block in altered_user:
+            for exterior_above_grade_wall in thermal_block.ExteriorAboveGradeWalls:
+                for fenestration_assembly in exterior_above_grade_wall.FenestrationAssemblies:
+                    fenestration_assembly.u_factor = 0
+                    fenestration_assembly.solar_heat_gain_coefficient = 0
+                    fenestration_assembly.visible_transmittance = 0
+        altered_baseline = deepcopy(self.baseline.Building.ThermalBlocks)
+        for thermal_block in altered_baseline:
+            for exterior_above_grade_wall in thermal_block.ExteriorAboveGradeWalls:
+                for fenestration_assembly in exterior_above_grade_wall.FenestrationAssemblies:
+                    fenestration_assembly.u_factor = 0
+                    fenestration_assembly.solar_heat_gain_coefficient = 0
+                    fenestration_assembly.visible_transmittance = 0
+        if altered_user == altered_baseline:
+            print("  Yes, the other portions of baseline ThermalBlocks matches user")
+        else:
+            print("  No, the other portions of baseline ThermalBlocks does not match user")
             self.baseline_err = True
 
         # user and proposed should match
